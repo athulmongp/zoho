@@ -1,0 +1,878 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<style>
+    .item-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.add,
+.remove {
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.highlight {
+    background-color: #f0f0f0;
+}
+    .custom-container {
+        background-color: black;
+        color: white;
+    }
+
+    .custom-list-group .custom-list-item {
+        color: white;
+        border: none;
+        margin-bottom: 10px;
+        cursor: pointer;
+        /* Add cursor style for links */
+    }
+    .highlight {
+        
+        color: #eeebeb; /* Updated text color for better visibility */
+    }
+
+    .custom-list-group .list-group-item.active {
+        background-color: #343a40;
+    }
+
+    .custom-content {
+        padding: 20px;
+        
+    }
+
+    /* Custom styles for left column */
+     .left-column {
+        background-color: rgba(rgb(235, 221, 221));
+        color: white;
+        padding: 20px;
+        height: 50vh;
+        overflow-y: auto;
+        /* Add scroll if needed */
+        width: 250px; 
+         /* Set the width of the left column */
+    } 
+
+    /* Custom styles for right column */
+    .right-column {
+        padding: 20px;
+       
+        flex: 1;
+        /* Take the remaining width */
+    }
+
+    /* Flexbox layout for row */
+    .row-container {
+        display: flex;
+    }
+
+    #dateRangePicker {
+        
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 100%;
+        font-size: 14px;
+        color:black !important;
+        /* Set the text color to black */
+    }
+
+    #reportrange .fa-caret-down {
+        color: rgb(11, 11, 11);
+    }
+
+    .daterangepicker .ranges li {
+        color: black;
+    }
+
+    .active-link {
+        color: #0b07ff;
+        /* Change to the desired active link color */
+    }
+
+    /* Additional styles for show/hide columns */
+    .item-list {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .add,
+    .remove {
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    .highlight {
+        background-color: #f0f0f0;
+    }
+    #close-button {
+        position: fixed;
+        top: 100px;
+        right: 70px;
+    }
+
+
+
+    .column-transfer {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: #060606;
+        border-radius: 5px;
+        flex-direction: row; /* Add this line to set flex direction to row */
+    }
+    .col-md-6 {
+        flex: 1; /* Make both columns take equal space */
+    }
+    .column-list {
+        background-color: rgb(4, 4, 4);
+        padding: 10px;
+     
+        border-radius: 5px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .transfer-button {
+        border: none;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 3px;
+    }
+    .search-input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 100%;
+  margin-right: 10px;
+  color: #060606;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.item-list {
+  list-style: none;
+  margin-top: 10px;
+}
+
+.items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.items:last-child {
+  border-bottom: none;
+}
+
+.add,
+.remove {
+  color: rgb(234, 221, 221);
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: none;
+}
+
+.items:hover .add,
+.items:hover .remove {
+  display: inline-block;
+}
+.highlight {
+    background-color: #f0f0f0;
+}
+.highlight {
+    background-color: #dcdcdc; /* Use a darker shade for better visibility */
+    color: black; /* Set the text color to black for better contrast */
+}
+
+#filter-space{
+    padding-right: 5px;
+}
+
+
+    .filter-section {
+        margin-top: 20px;
+    }
+
+    .filter-row {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .filter-field {
+        flex: 1;
+        margin-right: 10px;
+        color: #080808;
+    }
+
+    .filter-action {
+        margin-top: auto;
+    }
+
+    .column-transfer {
+        display: flex;
+        gap: 10px;
+        margin-top: 35px;
+        margin-left: 250px;
+        margin-right: 50px;
+        border: 1px solid #ccc;
+        padding: 40px;
+        background-color: #060606;
+        border-radius: 10px;
+        flex-direction: row;
+        
+    }
+
+  
+/* checkbox dropdown */
+
+    * {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: #379937;
+}
+
+
+
+.dropdown2 {
+  position: relative;
+  font-size: 15px;
+  color: #333;
+  width: 260px;
+  
+
+  .dropdown2-list {
+    padding: 12px;
+    background-color: rgb(7, 7, 7);
+    position: absolute;
+    top: 30px;
+    left: 0px;
+    right: 2px;
+    width: 228px;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
+    transform-origin: 50% 0;
+    transform: scale(1, 0);
+    transition: transform .15s ease-in-out .15s;
+    max-height: 66vh;
+    overflow-y: scroll;
+    
+  }
+  .dropdown2-list {
+    transition: none !important;
+}
+  
+  .dropdown2-option {
+    display: block;
+    padding: 3px 12px;
+    opacity: 0;
+    transition: opacity .15s ease-in-out;
+    
+  }
+  
+  .dropdown2-label {
+    display: block;
+    height: 38px;
+    background-color: rgb(7, 7, 7);
+    padding: 12px 12px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 4px;
+    
+    &:before {
+      content: '▼';
+      float: right;
+    }
+  }
+  
+  &.on {
+   .dropdown2-list {
+      transform: scale(1, 1);
+      transition-delay: 0s;
+      
+      .dropdown2-option {
+        opacity: 1;
+        transition-delay: none;
+      }
+    }
+    
+    .dropdown2-label:before {
+      content: '▲';
+    }
+  }
+  
+  [type="checkbox"] {
+    position: relative;
+    top: -1px;
+    margin-right: 4px;
+  }
+}
+ /* checkbox dropdown */  
+
+ #dropdown2-third{
+    width: 228px;
+
+ }
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+<div class="container main-content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Place the close button here -->
+            <a href="{% url 'purchasebyitem' %}" class="btn btn-light" id="close-button" style="color:  rgb(1, 1, 1);">
+                <i class="fa fa-times-circle"></i>
+            </a>
+        </div>
+    </div>
+    <div class="row row-container">
+        <div class="col-md-3 left-column">
+            <div class="custom-list-group">
+                <a class="custom-list-item active" data-target="general" >
+                    General
+                </a>
+                <br>
+                <br>
+                <br>
+                <a class="custom-list-item" data-target="columns">
+                    Show/Hide Columns
+                </a>
+            </div>
+        </div>
+        <div class="col-md-9 right-column">
+            <div id="general" class="custom-content">
+                <div>
+                    <label for="dateRangePicker" class="pb-3" style="color: beige;">Date Range:</label>
+                    <input type="text" id="dateRangePicker" class="form-control" style="color: #060606;" >
+                </div>
+                <label class="pt-5 mb-3" style="color: beige;">Group By:</label>
+                <label class="pt-5 mb-3" style="color: beige;margin-left:305px;">Account:</label>
+                
+
+                <div class="d-flex flex-grow-1 px-1" >
+                    <select class="form-control" style=" color: black!important;">
+                        <option value="##" style="color: #ffffff;" disabled selected hidden>None</option>
+                        {% for items in vendors %}
+                        <option value="##"  style=" color: black;">{{ items.vendor_display_name }}</option>
+
+                       <!-- Add options -->
+
+                        {% endfor %}
+                    </select>
+
+                    <select class="form-control" style=" color: black!important;margin-left: 40px;">
+                        <option value="##"  disabled selected hidden>All</option>
+                        <option value="##"  disabled >no results found</option>
+
+                        <!-- Add options -->
+
+                    </select>              
+                </div>
+            
+
+                
+            <div class="filter-section mt-5" >
+                <h6 style="color:  beige;" >Advanced Filters</h6>
+                <div id="filterContainer"> <!-- Added a container div -->
+                    <!-- The first filter row -->
+                    <div class="filter-row">
+                        <div class="filter-field">
+                            <label for="filterSelectField"></label>
+                            <select class="form-control custom-select " style=" color: black!important;margin-left: 4px; transform: translateY(0);">
+                                <option value="" disabled selected hidden>Select a field</option>
+                                <optgroup  inputmode="">
+                                </optgroup>
+                                <optgroup label="Reports"  >
+                                    
+                                    {% for i in bills %}
+                                    <option value="">{{ i.item_name }}</option>
+                                    {% endfor %}
+
+                                </optgroup>
+                                <optgroup></optgroup>
+            
+                                <optgroup label="Item"  >
+                                    <option value="">SKU</option>
+                                    <option value="">Breadth</option>
+                                    <option value="">Show in PDF</option>
+                                    <option value="">we</option>
+                                    <option value="">Date CF</option>
+                                    <option value="">Dropdown</option>
+                                    <option value="">Mandatory customfield</option>
+                                    <option value="">4</option>  
+
+                                </optgroup>                               
+                            </select> 
+                        </div>
+
+
+
+                        <div class="filter-field">
+                            <label for="filterSelectColumn"></label>
+                            <select class="form-control" style=" color: black!important;width:300px;margin-left: 69px;">
+                                <option  disabled selected hidden>Select a comparator</option>
+                                <option disabled >no results found</option>
+
+                                 <!-- Add options -->
+
+                            </select>
+                        </div>
+                        
+                        <div class="filter-action ">
+                            <button class="btn btn-light" style="margin-left: 80px;">-</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-action">
+                    <button id="addFilter" style="color: rgb(255, 0, 0);" class="btn">+ Add more</button>
+                </div>
+            </div>
+        </div>
+            
+
+                 
+                
+    
+
+            
+           
+            <div id="columns" class="custom-content" style="display: none;">
+                <div class="row column-transfer">
+                <!-- Show/Hide Columns section -->
+                <div class="row">
+                    <div class="col-md-6" id="originalColumn" style="height: 70vh; width:25vw; overflow-y:auto; border: 1px solid #ccc; position: relative; padding-right: 15px;">
+                        <h2 style="color: white; position: sticky; top: 0;">Available Column</h2>
+                        <div class="search-bar" style="position: sticky; top: 40px;">
+                            <input type="text" id="searchInput" class="search-input" placeholder="Search items">
+                            <span class="search-icon">&#128269;</span>
+                        </div>
+                        <ul class="item-list" style="color: #eeebeb;">
+                            
+                            
+                            <li class="items"><span class="item-text">SKU</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">Item Type</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">Product Type</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">Usage Unit</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">Sales Description</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">Purchase Description</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">Purchase price</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">Breadth</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">Length</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">we</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">Date CF</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">Dropdown</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">Mandatory customfield</span><span class="add">+</span></li>
+                            <li class="items"><span class="item-text">4</span><span class="add">+</span></li>
+                        </ul>
+                    </div>
+                    <!-- <div class="col-md-6" id="addedColumn" style="height: auto; max-height:70vh; width:25vw; overflow-y:auto ;border: 1px solid #ccc; padding-left: 15px;">
+                        <h2 style="color: white; position: sticky; top:0;">Selected Column</h2>
+                        <ul class="item-list" style="color: #eeebeb;"></ul>
+                    </div> -->
+                    <div class="col-md-6" id="addedColumn" style="height: 70vh; width:25vw; overflow-y:auto; border: 1px solid #ccc; position: relative; padding-right: 15px;">
+                        <h2 style="color: white;">Selected Column</h2>
+                        <ul class="item-list" style="color: #eeebeb;">
+                            <li class="items"><span class="item-text ">Item Name</span><span class="remove">-</span>
+                                <li class="items"><span class="item-text">Quantity Purchased</span><span class="remove">-</span>
+                                    <li class="items"><span class="item-text">Amount</span><span class="remove">-</span>
+                                        <li class="items"><span class="item-text">Average Price</span><span class="remove">-</span>
+                            <!-- <li class="items"><span class="item-text">sales with Tax</span><span class="remove">-</span>  -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+                <!-- End Show/Hide Columns section -->
+            </div>
+        </div>
+       
+    </div>
+</div>
+</div>  
+
+    
+<script>
+
+
+
+
+
+
+
+// checkbox
+
+(function($) {
+  var CheckboxDropdown = function(el) {
+    var _this = this;
+    this.isOpen = false;
+    this.areAllChecked = false;
+    this.$el = $(el);
+    this.$label = this.$el.find('.dropdown2-label');
+    this.$checkAll = this.$el.find('[data-toggle="check-all"]').first();
+    this.$inputs = this.$el.find('[type="checkbox"]');
+    
+    this.onCheckBox();
+    
+    this.$label.on('click', function(e) {
+      e.preventDefault();
+      _this.toggleOpen();
+    });
+    
+    this.$checkAll.on('click', function(e) {
+      e.preventDefault();
+      _this.onCheckAll();
+    });
+    
+    this.$inputs.on('change', function(e) {
+      _this.onCheckBox();
+    });
+  };
+  
+  CheckboxDropdown.prototype.onCheckBox = function() {
+    this.updateStatus();
+  };
+  
+  CheckboxDropdown.prototype.updateStatus = function() {
+    var checked = this.$el.find(':checked');
+    
+    this.areAllChecked = false;
+    this.$checkAll.html('All');
+    
+    if(checked.length <= 0) {
+      this.$label.html();
+    }
+    else if(checked.length === 1) {
+      this.$label.html(checked.parent('label').text());
+    }
+    else if(checked.length === this.$inputs.length) {
+      this.$label.html('All Selected');
+      this.areAllChecked = true;
+      this.$checkAll.html('Uncheck All');
+    }
+    else {
+      this.$label.html(checked.length + ' Selected');
+    }
+  };
+  
+  CheckboxDropdown.prototype.onCheckAll = function(checkAll) {
+    if(!this.areAllChecked || checkAll) {
+      this.areAllChecked = true;
+      this.$checkAll.html('Uncheck All');
+      this.$inputs.prop('checked', true);
+    }
+    else {
+      this.areAllChecked = false;
+      this.$checkAll.html('Check All');
+      this.$inputs.prop('checked', false);
+    }
+    
+    this.updateStatus();
+  };
+  
+  CheckboxDropdown.prototype.toggleOpen = function(forceOpen) {
+    var _this = this;
+    
+    if(!this.isOpen || forceOpen) {
+       this.isOpen = true;
+       this.$el.addClass('on');
+      $(document).on('click', function(e) {
+        if(!$(e.target).closest('[data-control]').length) {
+         _this.toggleOpen();
+        }
+      });
+    }
+    else {
+      this.isOpen = false;
+      this.$el.removeClass('on');
+      $(document).off('click');
+    }
+  };
+  
+  var checkboxesDropdowns = document.querySelectorAll('[data-control="checkbox-dropdown2"]');
+  for(var i = 0, length = checkboxesDropdowns.length; i < length; i++) {
+    new CheckboxDropdown(checkboxesDropdowns[i]);
+  }
+})(jQuery);
+
+// checkbox
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const links = document.querySelectorAll(".custom-list-item");
+    const contents = document.querySelectorAll(".custom-content");
+    
+      
+    $('.dropdown2-toggle').dropdown();
+        links.forEach((link, index) => {
+            link.addEventListener("click", () => {
+                links.forEach(link => {
+                    link.classList.remove("active-link");
+                });
+                link.classList.add("active-link");
+                contents.forEach(content => {
+                    content.style.display = "none";
+                });
+                const targetId = link.getAttribute("data-target");
+                const targetContent = document.getElementById(targetId);
+                targetContent.style.display = "block";
+            });
+        });
+//logic for show/hide columns
+const originalAvailableItems = document.querySelectorAll("#originalColumn .items");
+      const originalAddButtons = document.querySelectorAll("#originalColumn .add");
+      const selectedItems = document.querySelector("#addedColumn .item-list");
+      const addedRemoveButtons = document.querySelectorAll("#addedColumn .remove");
+      const searchInput = document.getElementById("searchInput");
+      const searchIcon = document.querySelector(".search-icon");
+
+      const itemIds = {}; // Map of item text to unique identifier
+
+      originalAddButtons.forEach((button, index) => {
+        button.addEventListener("click", () => {
+          const itemText = originalAvailableItems[index].querySelector(".item-text").textContent;
+          const itemId = `selected-${itemText}`; // Unique identifier
+          itemIds[itemText] = itemId;
+          const listItem = document.createElement("li");
+          listItem.className = "items";
+          listItem.innerHTML = `<span class="item-text">${itemText}</span> <span class="remove">-</span>`;
+          listItem.setAttribute("data-item-id", itemId); // Set the unique identifier
+          selectedItems.appendChild(listItem);
+          originalAvailableItems[index].style.display = "none";
+
+          const removeButton = listItem.querySelector(".remove");
+          removeButton.addEventListener("click", () => {
+            selectedItems.removeChild(listItem);
+            originalAvailableItems[index].style.display = "flex";
+          });
+        });
+      });
+
+      addedRemoveButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const selectedItem = button.parentNode;
+          const itemText = selectedItem.querySelector(".item-text").textContent;
+          const itemId = itemIds[itemText]; // Get the unique identifier
+
+          const listItem = document.createElement("li");
+          listItem.className = "items";
+          listItem.innerHTML = `<span class="item-text">${itemText}</span> <span class="add">+</span>`;
+          listItem.setAttribute("data-item-id", itemId); // Set the unique identifier
+
+          originalAvailableItems[0].parentNode.insertBefore(listItem, originalAvailableItems[0]);
+          selectedItems.removeChild(selectedItem);
+
+          const addButton = listItem.querySelector(".add");
+          addButton.addEventListener("click", () => {
+            selectedItems.appendChild(selectedItem);
+            originalAvailableItems[0].parentNode.removeChild(listItem);
+          });
+        });
+      });
+
+      searchInput.addEventListener("input", () => {
+    const searchTerm = searchInput.value.toLowerCase();
+    originalAvailableItems.forEach(item => {
+        const itemText = item.querySelector(".item-text").textContent.toLowerCase();
+        if (itemText.includes(searchTerm)) {
+            item.style.display = "flex";
+            if (searchTerm !== "") {
+                item.classList.add("highlight");
+            } else {
+                item.classList.remove("highlight");
+            }
+        } else {
+            item.style.display = "none";
+            item.classList.remove("highlight");
+        }
+    });
+
+    selectedItems.querySelectorAll(".items").forEach(item => {
+        const itemText = item.querySelector(".item-text").textContent.toLowerCase();
+        if (itemText.includes(searchTerm)) {
+            item.style.display = "flex";
+            if (searchTerm !== "") {
+                item.classList.add("highlight");
+            } else {
+                item.classList.remove("highlight");
+            }
+        } else {
+            item.style.display = "none";
+            item.classList.remove("highlight");
+        }
+    });
+});
+
+       // Initialize date range picker
+       $('#dateRangePicker').daterangepicker({
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                'Previous Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+        'Previous Quarter': [
+            moment().subtract(3, 'months').startOf('quarter'),
+            moment().subtract(3, 'months').endOf('quarter')
+        ]
+            }
+        }, function (start, end, label) {
+            // Callback function when a date range is selected
+            console.log('A date range was chosen: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        });
+    
+    });
+
+
+
+    const addFilterButton = document.getElementById("addFilter");
+        const filterRowContainer = document.querySelector(".filter-row");
+        const filterContainer = document.querySelector("#filterContainer");
+       
+
+
+
+
+
+        
+        addFilterButton.addEventListener("click", () => {
+            console.log("Add more button clicked");
+
+            const filterRow = document.createElement("div");
+            filterRow.className = "filter-row";
+            filterRow.innerHTML = `
+            <div class="filter-field">
+                            <label for="filterSelectField"></label>
+                            <select class="form-control custom-select " style=" color: black!important;margin-left: 4px; transform: translateY(0);">
+                                <option value="" disabled selected hidden>Select a field</option>
+                                <optgroup  inputmode="">
+                                </optgroup>
+                                <optgroup label="Reports"  >
+                                    
+                                    {% for i in bills %}
+                                    <option value="">{{ i.item_name }}</option>
+                                    {% endfor %}
+
+                                </optgroup>
+                                <optgroup></optgroup>
+            
+                                <optgroup label="Item"  >
+                                    
+                                    <option value="">SKU</option>
+                                    <option value="">Breadth</option>
+                                    <option value="">Show in PDF</option>
+                                    <option value="">we</option>
+                                    <option value="">Date CF</option>
+                                    <option value="">Dropdown</option>
+                                    <option value="">Mandatory customfield</option>
+                                    <option value="">4</option>  
+
+                                </optgroup>
+                                
+                               
+                            </select> 
+
+                         
+
+                          
+
+
+
+                        </div>
+
+
+
+                        <div class="filter-field">
+                            <label for="filterSelectColumn"></label>
+                            <select class="form-control" style=" color: black!important;width:300px;margin-left: 69px;">
+                                <option  disabled selected hidden>Select a comparator</option>
+                                
+                                <option disabled >no results found</option>
+                            </select>
+                        </div>
+                        <div class="filter-action">
+                            <button class="btn btn-light" style="margin-left: 80px;">-</button>
+                        </div>
+    `;
+
+
+            const removeFilterButton = filterRow.querySelector(".btn-light");
+            removeFilterButton.addEventListener("click", () => {
+                filterContainer.removeChild(filterRow); // Remove the filter row from the container
+            });
+
+           
+
+            // Find the index of the current filter row
+            const currentIndex = Array.from(filterContainer.children).indexOf(filterRowContainer);
+
+            // Insert the new filter row after the current filter row
+            filterContainer.insertBefore(filterRow, filterContainer.children[currentIndex + 1]);
+        });
+
+
+
+
+
+
+
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       
+
+       
+    
+    
+    
+</script>
+
+{% endblock %}
