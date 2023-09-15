@@ -80,41 +80,44 @@
   }
 
 </style>
+<section>
+  <div class="row p-3">
+    <div class="list col-4 col-lg-3 col-md-2  col-sm-2 py-3">
+      <div class="header ">
+        <h5>All Items</h5>
+      </div>
+      <div class="searchbar" style="display: flex;">
+        <input type="text" id="searchInput" class="form-control bg-dark" placeholder="Search Items..."
+          style="color: rgb(255, 255, 255);background: transparent;margin-right: 5px;">
+        
 
-<section class="item" id="navbar-example2">
-  <div class="nav-item" style="height: 4vh; width: 4vw; padding-top: 14px; margin-left: 97%;">
-    <button type="button" onclick="history.go(-1);" style="height: 5vh; width: 2.5vw;">&times;</button>
-  </div>
-  <div class="container" style="background: black; margin-left: -5rem; margin-top: 2rem; width: 90%; height: 72%;">
-    <div class="col-md-12" style="right: 0;">
-      <div class="row">
-        <div class="col-md-3" style="border-right: 1px solid white; height: 100vh; position: absolute; z-index: 99;">
-          <div class="row">
-            <div class="col-md-4" style="margin-left: 15rem; margin-top: -1.9rem;">
-              <a style="color: black; margin-top: 5rem; background: #FFCFB0;" class="btn btn-secondary" href="{% url 'additem' %}">New</a>
-            </div>
-          </div>
-          <input type="text" id="searchInput" class="form-control bg-dark" placeholder="Search Items..." style="margin-top: -2.2rem; width: 50%; margin-left: 1rem;">
-          <div id="tableContainer" style="max-height: 500px; overflow-y: auto; margin-top: 2rem;">
-            <table class="table text-white" style="margin-top: 4rem;" id="dataTable">
-              <thead>
-                <tr>
-                  <th>Item</th>
-                  <th>Quantity</th>
-                </tr>
-              </thead>
-              <tbody id="tableBody1">
-                {% for v in allproduct %}
-                <tr>
+      </div>
+      <hr>
+      <table class="table table-borderless" id="mytable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          {% for v in allproduct %}
+          <tr>
+
+          
                   <td><a class="text-white" href="{% url 'transaction' v.id %}">{{ v.Name }}</a></td>
-                  <td><a class="text-white" href="#">{{ v.stock }}</a></td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="col-md-9" style="margin-left: 21rem;" data-spy="scroll" data-target="#navbar-example2" data-offset="0">
+                  <td><a class="text-white" href="{% url 'transaction' v.id %}">{{ v.stock }}</a></td>
+                
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+
+    <div class="overview col-9 col-lg-9 col-md-10  col-sm-10 py-2" style="background-color: black; max-height: 100vw;">
+    <!-- <div class="col-md-9" style="margin-left: 21rem;" data-spy="scroll" data-target="#navbar-example2" data-offset="0"> -->
           <div class="row" style="position: relative;">
             <div class="container">
               <div class="row" style="margin-top: 4.2rem;">
@@ -122,19 +125,22 @@
                   <a class="" style="font-size: 1.5rem; margin-left: 4rem; margin-top: -2rem; color: #FFCFB0;">
                     <h3>{{ product.Name }}</h3>
                   </a>
-                  <p style="margin-top: 1.5rem; color: #FFCFB0;">SALE PRICE :</p>
-                  <p style="margin-top: -2.2rem; margin-left: 8rem; color: #01F9C6;">{{ product.s_price }}(incl)</p>
-                  <p style="margin-top: -1rem; color: #FFCFB0;">PURCHASE PRICE :</p>
-                  <p style="margin-top: -2.3rem; margin-left: 8rem; color: #01F9C6;">{{ product.p_price }}(excl)</p>
-                  <p style="margin-top: -3.9rem; margin-left: 45rem; color: #FFCFB0;">STOCK QUANTITY :</p>
-                  <p style="margin-top: -2.2rem; margin-left: 53rem; color: #01F9C6;">{{ product.stock }}</p>
-                  <p style="margin-top: -1rem; margin-left: 45rem; color: #FFCFB0;">STOCK VALUE :</p>
-                  <p style="margin-top: -2.3rem; margin-left: 53rem; color: #01F9C6;">{{ stock }}</p>
+                  <hr>
+                  <p style="margin-top: 1.5rem; color: #FFCFB0;">SALE PRICE </p>
+                  <p style="margin-top: -2.2rem; margin-left: 8rem; color: #01F9C6;">: {{ product.s_price }}(incl)</p>
+                  <p style="margin-top: -1rem; color: #FFCFB0;">PURCHASE PRICE </p>
+                  <p style="margin-top: -2.3rem; margin-left: 8rem; color: #01F9C6;">: {{ product.p_price }}(excl)</p>
+                  <p style="margin-top: -3.9rem; margin-left: 40rem; color: #FFCFB0;">STOCK QUANTITY </p>
+                  <p style="margin-top: -2.2rem; margin-left: 48rem; color: #01F9C6;">: {{ product.stock }}</p>
+                  <p style="margin-top: -1rem; margin-left: 40rem; color: #FFCFB0;">STOCK VALUE </p>
+                  <p style="margin-top: -2.3rem; margin-left: 48rem; color: #01F9C6;">: {{ stock }}</p>
                 </div>
+                <hr>
               </div>
             </div>
           </div>
-          <div id="tableContainer" style="max-height: 500px; overflow-y: auto; margin-top: 11rem; margin-left: 0.1rem; width: 100%;">
+          
+          <div id="tableContainer" style="max-height: 500px; overflow-y: auto; margin-top: 14rem; margin-left: 0.1rem; width: 100%;">
             <table class="table text-white" id="dataTable2">
               <thead>
                 <tr>
@@ -227,7 +233,8 @@
                   <td>{{ v.estimate.estimate_date }}</td>
                   <td>{{ v.quantity }}</td>
                   <td>{{ v.rate }}</td>
-                  <td></td>
+
+                  <td>{{ product.status }}</td>
                 {% endfor %}
                 </tr>
 
@@ -238,7 +245,7 @@
                   <td>{{ s.sale.sales_date }}</td>
                   <td>{{ s.quantity }}</td>
                   <td>{{ s.rate }}</td>
-                  <td></td>
+                  <td>{{ product.status }}</td>
                 {% endfor %}
                 </tr>
                 
@@ -249,7 +256,7 @@
                   <td>{{ r.ri.start }}</td>
                   <td>{{ r.quantity }}</td>
                   <td>{{ r.rate }}</td>
-                  <td></td>
+                  <td>{{ product.status }}</td>
                 {% endfor %}
                 </tr>
 
@@ -260,7 +267,7 @@
                   <td>{{ p.PO.Ord_date }}</td>
                   <td>{{ p.quantity }}</td>
                   <td>{{ p.rate }}</td>
-                  <td></td>
+                  <td>{{ product.status }}</td>
                 {% endfor %}
                 </tr>
 
@@ -271,7 +278,7 @@
                   <td>{{ r.recur_bills.start_date }}</td>
                   <td>{{ r.quantity }}</td>
                   <td>{{ r.rate }}</td>
-                  <td></td>
+                  <td>{{ product.status }}</td>
                 {% endfor %}
                 </tr>
 
@@ -282,7 +289,7 @@
                   <td>{{ i.inv.inv_date }}</td>
                   <td>{{ i.quantity }}</td>
                   <td>{{ i.rate }}</td>
-                  <td></td>
+                  <td>{{ product.status }}</td>
                 {% endfor %}
                 </tr>
 
@@ -293,7 +300,7 @@
                   <td>{{ d.chellan.chellan_date }}</td>
                   <td>{{ d.quantity }}</td>
                   <td>{{ d.rate }}</td>
-                  <td></td>
+                  <td>{{ product.status }}</td>
                 {% endfor %}
                 </tr>
 
@@ -304,7 +311,7 @@
                   <td>{{ b.purchase_bill.bill_date }}</td>
                   <td>{{ b.quantity }}</td>
                   <td>{{ b.rate }}</td>
-                  <td></td>
+                  <td>{{ product.status }}</td>
                 {% endfor %}
                 </tr>
 
@@ -315,7 +322,7 @@
                   <td>{{ e.start_date }}</td>
                   <td>{{ e.quantity }}</td>
                   <td>{{ e.amount }}</td>
-                  <td></td>
+                  <td>{{ product.status }}</td>
                 {% endfor %}
                 </tr>
 

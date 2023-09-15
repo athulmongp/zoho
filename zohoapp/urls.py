@@ -299,7 +299,7 @@ urlpatterns = [
 	path('editprojdb/<int:id>',views.editprojdb,name='editprojdb'),
 	path('delproj/<int:id>',views.delproj,name='delproj'),
 	path('createuser', views.createuser, name='createuser'),
-# 	path('comment/<int:id>', views.comment, name='comment'),
+
 	path('commentdb/<int:pk>/', views.commentdb, name='commentdb'),
 	path('toggle-status/<int:project_id>/', views.toggle_status, name='toggle_status'),
 	path('itemdata2',views.itemdata2,name='itemdata2'),
@@ -552,6 +552,12 @@ urlpatterns = [
     path('ewayeditdb/<int:id>/',views.ewayeditdb,name='ewayeditdb'),
     path('ewaycommentdb/<int:id>', views.ewaycommentdb, name='ewaycommentdb'),
     path('get-transportation-options/', views.get_transportation_options, name='get_transportation_options'),
+
+
+    path('sort_product_name/<int:id>', views.sort_product_name, name='sort_product_name'),
+    path('sort_product_hsn/<int:id>', views.sort_product_hsn, name='sort_product_hsn'),
+    path('commentproduct/<int:product_id>', views.commentproduct, name='commentproduct'),
+    path('salesgraph', views.salesgraph, name='salesgraph'),
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
     

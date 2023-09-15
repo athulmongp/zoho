@@ -65,8 +65,8 @@
         </a>
         <div class="dropdown-menu ">
           <a class="dropdown-item" href="#" data-sort="all">All</a>
-          <a class="dropdown-item" href="#" data-sort="hsn">HSN Number</a>
-          <a class="dropdown-item" href="#" data-sort="name">Name </a>
+          <a class="dropdown-item" href="{% url 'sort_product_hsn' product.id %}" data-sort="hsn">HSN Number</a>
+          <a class="dropdown-item" href="{% url 'sort_product_name' product.id %}" data-sort="name">Name </a>
         </div>
         <a class="btn btn-primary mr-1" href="{% url 'additem' %}"><i class="fa fa-plus"></i></a>
 
@@ -93,27 +93,33 @@
     </div>
     <div class="overview col-9 col-lg-9 col-md-10  col-sm-10 py-2" style="background-color: black;">
       <div id="overview">
-        <div class="p-name">
-          <h3 class="px-2 pb-2" id="id1">{{product.Name}}</h3>
-        </div>
-        {%  if product.satus == 'active' %}
-          <button class="btn btn-dark text-white mt-2" style="border: 2px solid green;"  >{{product.satus}}</button>
-          {% else %}
-          <button class="btn btn-dark text-white mt-3" style="border: 2px solid red;"  >{{product.satus}}</button>
-          {% endif %}
         <div class="row">
+          <div class="col">
+            <h3 class="px-2 pb-2" id="id1">{{product.Name}}</h3>
+          </div>
           <div class="col-md-2">
-            <a class="btn mx-1" href="#home">Overview</a>
+            {%  if product.satus == 'active' %}
+            <button class="btn btn-primary text-white mt-2" >{{product.satus}}</button>
+            {% else %}
+            <button class="btn btn-primary text-white mt-3"  >{{product.satus}}</button>
+            {% endif %}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-7" style="margin-top: 3rem;">
+            <a href="{% url 'transaction' product.id %}" style= "font-size: 18px; width: 8.6rem; height: 1.9rem; background-color: #FFCFB0;;"  class="btn btn-secondary  text-dark">
+              Transactions
+            </a>
           </div>
           
-          <div class="col-md-7" style="margin-left: 60%;">
-            <a class="btn ml-1" href="{% url 'edititem' product.id %}" data-toggle="tooltip" title="Edit"><i
+          <div class="col-md-3"  style="margin-top: 3rem;">
+            <a class="btn ml-1 btn-primary" href="{% url 'edititem' product.id %}" data-toggle="tooltip" title="Edit"><i
                 class="fas fa-edit"></i></a>
-            <a class="btn btn_print ml-1" href="" id="convertToPDFButton" data-toggle="tooltip" title="Pdf"><i
-                class="mdi mdi-file-pdf"></i></a>
+            <!-- <a class="btn btn_print ml-1" href="" id="convertToPDFButton" data-toggle="tooltip" title="Pdf"><i
+                class="mdi mdi-file-pdf"></i></a> -->
             <!-- onclick="generatePDF()" -->
 
-            <script type="text/javascript">
+            <!-- <script type="text/javascript">
               $(document).ready(function ($) {
                 console.log('print');
 
@@ -134,13 +140,13 @@
                 });
 
               });
-            </script>
+            </script> -->
 
-            <a class="btn ml-1" href="" id="dd1" data-bs-toggle="dropdown" aria-haspopup="true" data-toggle="tooltip"
+            <!-- <a class="btn ml-1" href="" id="dd1" data-bs-toggle="dropdown" aria-haspopup="true" data-toggle="tooltip"
               title="Download Attachments" aria-expanded="false" role="button">
               <i class="fas fa-download"></i>
-            </a>
-            <div class="dropdown-menu">
+            </a> -->
+            <!-- <div class="dropdown-menu">
               {% if attach %}
               <table class="table table-borderless">
                 {% for a in attach %}
@@ -154,20 +160,68 @@
               {% else %}
               <div class="text-center">No Attachment found</div>
               {% endif %}
-            </div>
+            </div> -->
 
-            <a class="btn ml-1" href="{% url 'cleer' product.id %}" data-toggle="tooltip" title="Delete"><i
+            <a class="btn ml-1  btn-danger" href="{% url 'cleer' product.id %}" data-toggle="tooltip" title="Delete"><i
                 class="fa fa-trash"></i></a>
-            <a class="btn ml-1" href="" data-toggle="modal" data-target="#commentModal" data-toggle="tooltip"
-              title="comment"><i class="far fa-comment"></i></a>
-            <label for="file-input" class="btn ml-1 border-0" data-toggle="tooltip" title="Upload Attachments">
+                <button onclick="toggleModal()" class="btn btn-primary ">
+                  <i class="fa fa-solid fa-comment"></i>
+                </button>
+            <label for="file-input" class="btn ml-1 border-0 btn-primary" data-toggle="tooltip" title="Upload Attachments">
               <i class="fas fa-paperclip"></i>
             </label>
             <input id="file-input" type="file" name="file" style="display:none;" onchange="uploadFile()">
-            <a class="btn ml-1" href="" id="sts"></a>
+            <!-- <a class="btn ml-1  " href="" id="sts"></a> -->
           </div>
         </div>
         <hr>
+        
+
+    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Add Comment</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="commentForm" method="post" action="{% url 'commentproduct' product.id %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="commentInput">Comment:</label>
+                <textarea class="form-control bg-white text-dark" id="commentInput" name="comment" rows="3" style="height: 80px;"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="submitCommentBtn" onclick="submitComment()">Submit</button>
+              </div>
+              <div class="container-fluid">
+                <table class="table table-responsive-md mt-4 table text-white">
+                  <thead>
+                    <tr>
+                      <th>sl no.</th>
+                      <th>Comments</th>
+                      <th>Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for com in comments %}
+                    <tr class="table-row">
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ com.content }}</td>  
+                      <td><a href="{% url 'delete_comment' product.id com.id %}">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
 
        

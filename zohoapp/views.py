@@ -29,6 +29,9 @@ from django.urls import reverse
 from django.db.models import Sum
 from itertools import groupby
 
+from django.http import JsonResponse
+
+
 
 def index(request):
 
@@ -395,295 +398,6 @@ def edit_profile(request,pk):
     }
     
     return render(request,'edit_profile.html',context)
-
-@login_required(login_url='login')
-def itemview(request):
-    company = company_details.objects.get(user = request.user)
-    viewitem=AddItem.objects.all()
-    return render(request,'item_view.html',{'view':viewitem,'company':company})
-
-
-@login_required(login_url='login')
-def additem(request):
-    company=company_details.objects.get(user=request.user)
-    unit=Unit.objects.all()
-    sale=Sales.objects.all()
-    purchase=Purchase.objects.all()
-    accounts = Purchase.objects.all()
-    account_types = set(Purchase.objects.values_list('Account_type', flat=True))
-
-    
-    account = Sales.objects.all()
-    account_type = set(Sales.objects.values_list('Account_type', flat=True))
-    
-    
-
-    return render(request,'additem.html',{'unit':unit,'sale':sale,'purchase':purchase,'company':company,
-               
-                            "account":account,"account_type":account_type,"accounts":accounts,"account_types":account_types,
-                            
-                            })
-
-@login_required(login_url='login')
-def add_account(request):
-    if request.method=='POST':
-        Account_type  =request.POST.get('acc_type')
-        if Account_type is not None:
-            Account_name =request.POST['acc_name']
-            Account_desc =request.POST['acc_desc']
-        
-            acc=Purchase(Account_type=Account_type,Account_name=Account_name,Account_desc=Account_desc)
-            acc.save() 
-            account_id=acc.id 
-                           
-            return JsonResponse({"Account_type":Account_type,"Account_name":Account_name,"Account_desc":Account_desc,'account_id':account_id})
-        
-    return render(request,'additem.html')
-
-
-@login_required(login_url='login')
-def add(request):
-    if request.user.is_authenticated:
-        if request.method=='POST':
-            radio=request.POST.get('radio')
-           
-            
-            if radio =='taxable':
-                print('tax section')
-                
-    
-                
-                inter=request.POST['inter']
-                intra=request.POST['intra']
-                type=request.POST.get('type')
-                name=request.POST['name']
-                unit=request.POST['unit']
-                hsn=request.POST['hsn']
-                status=request.POST.get('status')
-                sel_price=request.POST.get('sel_price')
-                sel_acc=request.POST.get('sel_acc')
-                s_desc=request.POST.get('sel_desc')
-                cost_price=request.POST.get('cost_price')
-                cost_acc=request.POST.get('cost_acc')      
-                p_desc=request.POST.get('cost_desc')
-                tax=request.POST.get('radio')
-                u=request.user.id
-                us=request.user
-                history="Created by" + str(us)
-                user=User.objects.get(id=u)
-                unit=Unit.objects.get(id=unit)
-                sel=Sales.objects.get(id=sel_acc)
-                cost=Purchase.objects.get(id=cost_acc)
-                invacc=request.POST.get('invacc')
-                stock=request.POST.get('openstock')
-           
-                print('satus')
-                
-                ad_item=AddItem(type=type,
-                                Name=name,
-                                p_desc=p_desc,
-                                s_desc=s_desc,
-                                s_price=sel_price,
-                                p_price=cost_price,
-                                tax=tax,
-                                hsn=hsn,
-                                unit=unit,
-                                sales=sel,
-                                purchase=cost,
-                                satus=status,
-                                user=user,
-                                creat=history,
-                                interstate=inter,
-                                intrastate=intra,
-                                invacc=invacc,
-                                stock=stock
-                                )
-                ad_item.save()
-                
-            else:
-                print('nontaxsection')
-                                                  
-                type=request.POST.get('type')
-                name=request.POST['name']
-                unit=request.POST['unit']
-                hsn=request.POST['hsn']
-                sel_price=request.POST.get('sel_price')
-                sel_acc=request.POST.get('sel_acc')
-                s_desc=request.POST.get('sel_desc')
-                cost_price=request.POST.get('cost_price')
-                cost_acc=request.POST.get('cost_acc')      
-                p_desc=request.POST.get('cost_desc')
-                tax=request.POST.get('radio')
-                status=request.POST.get('status')
-                u=request.user.id
-                us=request.user
-                history="Created by" + str(us)
-                user=User.objects.get(id=u)
-                unit=Unit.objects.get(id=unit)
-                sel=Sales.objects.get(id=sel_acc)
-                cost=Purchase.objects.get(id=cost_acc)
-                istock = request.POST['openstock']
-               
-                ad_item=AddItem(type=type,
-                                Name=name,
-                                hsn=hsn,
-                                p_desc=p_desc,
-                                s_desc=s_desc,
-                                s_price=sel_price,
-                                p_price=cost_price,
-                                unit=unit,
-                                sales=sel,
-                                tax=tax,
-                                purchase=cost,
-                                satus = status,
-                                user=user,
-                                creat=history,
-                                interstate='none',
-                                intrastate='none',
-                                stock=istock
-                            
-                               
-                                )
-                
-                ad_item.save()
-           
-           
-            return redirect("itemview")
-    return render(request,'additem.html')
-
-
-
-@login_required(login_url='login')
-def edititem(request,id):
-    item=AddItem.objects.all
-    pedit=AddItem.objects.get(id=id)
-    p=Purchase.objects.all()
-    s=Sales.objects.all()
-    u=Unit.objects.all()
-    company=company_details.objects.get(user=request.user)
-    accounts = Purchase.objects.all()
-    account_types = set(Purchase.objects.values_list('Account_type', flat=True))
-    
-
-    
-    account = Sales.objects.all()
-    account_type = set(Sales.objects.values_list('Account_type', flat=True))
-    
-    return render(request,'edititem.html',{"account":account,"account_type":account_type,'e':pedit,'p':p,'s':s,'u':u,"accounts":accounts,"account_types":account_types,'item':item, "company":company})
-
-
-
-
-@login_required(login_url='login')
-def edit_db(request,id):
-        if request.method=='POST':
-            edit=AddItem.objects.get(id=id)
-            edit.type=request.POST.get('type')
-            edit.Name=request.POST['name']
-            unit=request.POST.get('unit')
-            edit.s_price=request.POST['sel_price']
-            sel_acc=request.POST['sel_acc']
-            edit.s_desc=request.POST['sel_desc']
-            edit.p_price=request.POST['cost_price']
-            cost_acc=request.POST['cost_acc']        
-            edit.p_desc=request.POST['cost_desc']
-            edit.hsn=request.POST['hsn']
-            edit.stock=request.POST['openstock']
-            edit.satus=request.POST.get('status')
-            edit.invacc=request.POST.get('invacc')
-            edit.rate=request.POST['inventoryaccntperunit']
-            edit.status_stock=request.POST.get('satus')
-            edit.unit=Unit.objects.get(id=unit)
-            edit.sales=Sales.objects.get(id=sel_acc)
-            edit.purchase=Purchase.objects.get(id=cost_acc)
-            
-
-            edit.save()
-            
-            return redirect('detail', id=edit.id)
-
-
-        return render(request,'edititem.html')
-
-
-
-
-@login_required(login_url='login')
-def detail(request,id):
-    company=company_details.objects.get(user=request.user)
-    user_id=request.user
-    items=AddItem.objects.all()
-    product=AddItem.objects.get(id=id)
-    history=History.objects.filter(p_id=product.id)
-    comments = Comments_item.objects.filter(item=id).order_by('-id')
-    print(product.id)
-    
-    quantity = int(product.stock)
-    price = int(product.p_price)
-    stock = (quantity * price)
-    
-    
-    context={
-       "allproduct":items,
-       "product":product,
-       "history":history,
-       'company':  company, 
-       "comments":comments,
-       'stock': stock,
-    }
-    
-    return render(request,'demo.html',context)
-
-
-@login_required(login_url='login')
-def Action(request,id):
-    user=request.user.id
-    user=User.objects.get(id=user)
-    viewitem=AddItem.objects.all()
-    event=AddItem.objects.get(id=id)
-    
-
-    print(user)
-    if request.method=='POST':
-        action=request.POST['action']
-        event.satus=action
-        event.save()
-        if action == 'active':
-            History(user=user,message="Item marked as Active ",p=event).save()
-        else:
-            History(user=user,message="Item marked as inActive",p=event).save()
-    return render(request,'item_view.html',{'view':viewitem})
-
-@login_required(login_url='login')
-def cleer(request,id):
-    dl=AddItem.objects.get(id=id)
-    dl.delete()
-    return redirect('itemview')
-
-
-@login_required(login_url='login')
-def add_unit(request):
-    if request.method == 'POST':
-        unit_name = request.POST['unit_name']
-        unit = Unit(unit=unit_name)  
-        unit.save()  
-        unit_id = unit.id  
-        return JsonResponse({"unit_name": unit_name, "unit_id": unit_id})
-    return render(request, "additem.html")
-
-
-
-@login_required(login_url='login')
-def add_sales(request):
-    if request.method=='POST':
-        Account_type  =request.POST['acc_type']
-        Account_name =request.POST['acc_name']
-        Acount_code =request.POST['acc_code']
-        Account_desc =request.POST['acc_desc']        
-        acc=Sales(Account_type=Account_type,Account_name=Account_name,Acount_code=Acount_code,Account_desc=Account_desc)
-        acc.save()
-        return redirect('additem')
-    return render(request,'additem.html')
 
 
 @login_required(login_url='login')
@@ -9677,10 +9391,6 @@ def customize_report(request):
 def general_customize(request):
     return render(request,'general_customize.html') 
     
-def salesby_item(request):
-    items = AddItem.objects.all()
-    company_data = company_details.objects.get(user=request.user)
-    return render(request, 'salesby_item.html', {'items': items, 'company_data': company_data})
     
 def customize_report1(request):
     company_data = company_details.objects.get(user=request.user)
@@ -11656,3 +11366,450 @@ def get_transportation_options(request):
     transportation_options = Transportation.objects.all().values_list('method', flat=True)
     options_list = list(transportation_options)
     return JsonResponse({'options': options_list})
+
+
+
+
+
+
+
+
+
+
+@login_required(login_url='login')
+def itemview(request):
+    company = company_details.objects.get(user = request.user)
+    viewitem=AddItem.objects.all()
+    return render(request,'item_view.html',{'view':viewitem,'company':company})
+
+
+@login_required(login_url='login')
+def additem(request):
+    company=company_details.objects.get(user=request.user)
+    unit=Unit.objects.all()
+    sale=Sales.objects.all()
+    purchase=Purchase.objects.all()
+    accounts = Purchase.objects.all()
+    account_types = set(Purchase.objects.values_list('Account_type', flat=True))
+
+    
+    account = Sales.objects.all()
+    account_type = set(Sales.objects.values_list('Account_type', flat=True))
+    
+    
+
+    return render(request,'additem.html',{'unit':unit,'sale':sale,'purchase':purchase,'company':company,
+               
+                            "account":account,"account_type":account_type,"accounts":accounts,"account_types":account_types,
+                            
+                            })
+
+@login_required(login_url='login')
+def add_account(request):
+    if request.method=='POST':
+        Account_type  =request.POST.get('acc_type')
+        if Account_type is not None:
+            Account_name =request.POST['acc_name']
+            Account_desc =request.POST['acc_desc']
+        
+            acc=Purchase(Account_type=Account_type,Account_name=Account_name,Account_desc=Account_desc)
+            acc.save() 
+            account_id=acc.id 
+                           
+            return JsonResponse({"Account_type":Account_type,"Account_name":Account_name,"Account_desc":Account_desc,'account_id':account_id})
+        
+    return render(request,'additem.html')
+
+
+@login_required(login_url='login')
+def add(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            radio=request.POST.get('radio')
+           
+            
+            if radio =='taxable':
+                print('tax section')
+                
+    
+                
+                inter=request.POST['inter']
+                intra=request.POST['intra']
+                type=request.POST.get('type')
+                name=request.POST['name']
+                unit=request.POST['unit']
+                hsn=request.POST['hsn']
+                status=request.POST.get('status')
+                sel_price=request.POST.get('sel_price')
+                sel_acc=request.POST.get('sel_acc')
+                s_desc=request.POST.get('sel_desc')
+                cost_price=request.POST.get('cost_price')
+                cost_acc=request.POST.get('cost_acc')      
+                p_desc=request.POST.get('cost_desc')
+                tax=request.POST.get('radio')
+                u=request.user.id
+                us=request.user
+                history="Created by" + str(us)
+                user=User.objects.get(id=u)
+                unit=Unit.objects.get(id=unit)
+                sel=Sales.objects.get(id=sel_acc)
+                cost=Purchase.objects.get(id=cost_acc)
+                invacc=request.POST.get('invacc')
+                stock=request.POST.get('openstock')
+           
+                print('satus')
+                
+                ad_item=AddItem(type=type,
+                                Name=name,
+                                p_desc=p_desc,
+                                s_desc=s_desc,
+                                s_price=sel_price,
+                                p_price=cost_price,
+                                tax=tax,
+                                hsn=hsn,
+                                unit=unit,
+                                sales=sel,
+                                purchase=cost,
+                                satus=status,
+                                user=user,
+                                creat=history,
+                                interstate=inter,
+                                intrastate=intra,
+                                invacc=invacc,
+                                stock=stock
+                                )
+                ad_item.save()
+                
+            else:
+                print('nontaxsection')
+                                                  
+                type=request.POST.get('type')
+                name=request.POST['name']
+                unit=request.POST['unit']
+                hsn=request.POST['hsn']
+                sel_price=request.POST.get('sel_price')
+                sel_acc=request.POST.get('sel_acc')
+                s_desc=request.POST.get('sel_desc')
+                cost_price=request.POST.get('cost_price')
+                cost_acc=request.POST.get('cost_acc')      
+                p_desc=request.POST.get('cost_desc')
+                tax=request.POST.get('radio')
+                status=request.POST.get('status')
+                u=request.user.id
+                us=request.user
+                history="Created by" + str(us)
+                user=User.objects.get(id=u)
+                unit=Unit.objects.get(id=unit)
+                sel=Sales.objects.get(id=sel_acc)
+                cost=Purchase.objects.get(id=cost_acc)
+                istock = request.POST['openstock']
+               
+                ad_item=AddItem(type=type,
+                                Name=name,
+                                hsn=hsn,
+                                p_desc=p_desc,
+                                s_desc=s_desc,
+                                s_price=sel_price,
+                                p_price=cost_price,
+                                unit=unit,
+                                sales=sel,
+                                tax=tax,
+                                purchase=cost,
+                                satus = status,
+                                user=user,
+                                creat=history,
+                                interstate='none',
+                                intrastate='none',
+                                stock=istock
+                            
+                               
+                                )
+                
+                ad_item.save()
+           
+           
+            return redirect("itemview")
+    return render(request,'additem.html')
+
+
+
+@login_required(login_url='login')
+def edititem(request,id):
+    item=AddItem.objects.all
+    pedit=AddItem.objects.get(id=id)
+    p=Purchase.objects.all()
+    s=Sales.objects.all()
+    u=Unit.objects.all()
+    company=company_details.objects.get(user=request.user)
+    accounts = Purchase.objects.all()
+    account_types = set(Purchase.objects.values_list('Account_type', flat=True))
+    
+
+    
+    account = Sales.objects.all()
+    account_type = set(Sales.objects.values_list('Account_type', flat=True))
+    
+    return render(request,'edititem.html',{"account":account,"account_type":account_type,'e':pedit,'p':p,'s':s,'u':u,"accounts":accounts,"account_types":account_types,'item':item, "company":company})
+
+
+
+
+@login_required(login_url='login')
+def edit_db(request,id):
+        if request.method=='POST':
+            edit=AddItem.objects.get(id=id)
+            edit.type=request.POST.get('type')
+            edit.Name=request.POST['name']
+            unit=request.POST.get('unit')
+            edit.s_price=request.POST['sel_price']
+            sel_acc=request.POST['sel_acc']
+            edit.s_desc=request.POST['sel_desc']
+            edit.p_price=request.POST['cost_price']
+            cost_acc=request.POST['cost_acc']        
+            edit.p_desc=request.POST['cost_desc']
+            edit.hsn=request.POST['hsn']
+            edit.stock=request.POST['openstock']
+            edit.satus=request.POST.get('status')
+            edit.invacc=request.POST.get('invacc')
+            edit.rate=request.POST['inventoryaccntperunit']
+            edit.status_stock=request.POST.get('satus')
+            edit.unit=Unit.objects.get(id=unit)
+            edit.sales=Sales.objects.get(id=sel_acc)
+            edit.purchase=Purchase.objects.get(id=cost_acc)
+            
+
+            edit.save()
+            
+            return redirect('detail', id=edit.id)
+
+
+        return render(request,'edititem.html')
+
+
+
+
+@login_required(login_url='login')
+def detail(request,id):
+    company=company_details.objects.get(user=request.user)
+    user_id=request.user
+    items=AddItem.objects.all()
+    product=AddItem.objects.get(id=id)
+    history=History.objects.filter(p_id=product.id)
+    comments = Comments_item.objects.filter(item=id).order_by('-id')
+    print(product.id)
+    
+    quantity = int(product.stock)
+    price = int(product.p_price)
+    stock = (quantity * price)
+    
+    
+    context={
+       "allproduct":items,
+       "product":product,
+       "history":history,
+       'company':  company, 
+       "comments":comments,
+       'stock': stock,
+    }
+    
+    return render(request,'demo.html',context)
+
+
+@login_required(login_url='login')
+def Action(request,id):
+    user=request.user.id
+    user=User.objects.get(id=user)
+    viewitem=AddItem.objects.all()
+    event=AddItem.objects.get(id=id)
+    
+
+    print(user)
+    if request.method=='POST':
+        action=request.POST['action']
+        event.satus=action
+        event.save()
+        if action == 'active':
+            History(user=user,message="Item marked as Active ",p=event).save()
+        else:
+            History(user=user,message="Item marked as inActive",p=event).save()
+    return render(request,'item_view.html',{'view':viewitem})
+
+@login_required(login_url='login')
+def cleer(request,id):
+    dl=AddItem.objects.get(id=id)
+    dl.delete()
+    return redirect('itemview')
+
+
+@login_required(login_url='login')
+def add_unit(request):
+    if request.method == 'POST':
+        unit_name = request.POST['unit_name']
+        unit = Unit(unit=unit_name)  
+        unit.save()  
+        unit_id = unit.id  
+        return JsonResponse({"unit_name": unit_name, "unit_id": unit_id})
+    return render(request, "additem.html")
+
+
+
+@login_required(login_url='login')
+def add_sales(request):
+    if request.method=='POST':
+        Account_type  =request.POST['acc_type']
+        Account_name =request.POST['acc_name']
+        Acount_code =request.POST['acc_code']
+        Account_desc =request.POST['acc_desc']        
+        acc=Sales(Account_type=Account_type,Account_name=Account_name,Acount_code=Acount_code,Account_desc=Account_desc)
+        acc.save()
+        return redirect('additem')
+    return render(request,'additem.html')
+
+
+def sort_product_name(request,id):
+   
+
+    company=company_details.objects.get(user=request.user)
+    user_id=request.user
+    items=AddItem.objects.all().order_by('Name')
+    product=AddItem.objects.get(id=id)
+    history=History.objects.filter(p_id=product.id)
+    comments = Comments_item.objects.filter(item=id).order_by('-id')
+    print(product.id)
+    
+    quantity = int(product.stock)
+    price = int(product.p_price)
+    stock = (quantity * price)
+    
+    
+    context={
+       "allproduct":items,
+       "product":product,
+       "history":history,
+       'company':  company, 
+       "comments":comments,
+       'stock': stock,
+       
+       
+    }
+    
+    return render(request,'demo.html',context)
+   
+    
+
+def sort_product_hsn(request,id):
+
+    company=company_details.objects.get(user=request.user)
+    user_id=request.user
+    items=AddItem.objects.all().order_by('hsn')
+    product=AddItem.objects.get(id=id)
+    history=History.objects.filter(p_id=product.id)
+    comments = Comments_item.objects.filter(item=id).order_by('-id')
+    print(product.id)
+    
+    quantity = int(product.stock)
+    price = int(product.p_price)
+    stock = (quantity * price)
+    
+    
+    context={
+       "allproduct":items,
+       "product":product,
+       "history":history,
+       'company':  company, 
+       "comments":comments,
+       'stock': stock,
+       
+       
+    }
+    
+    return render(request,'demo.html',context)
+
+
+def commentproduct(request, product_id):
+    if request.method == 'POST':
+        user = request.user
+        product = AddItem.objects.get(id=product_id)
+        new_comment = request.POST.get('comment')
+        
+        # Save the new comment to the database
+        cmt=Comments_item.objects.create(item=product, user=user, content=new_comment)
+        cmt.save()
+
+
+        company=company_details.objects.get(user=request.user)
+        user_id=request.user
+        items=AddItem.objects.all()
+        product=AddItem.objects.get(id=product_id)
+        history=History.objects.filter(p_id=product.id)
+        comments = Comments_item.objects.filter(item=product_id).order_by('-id')
+        print(product.id)
+    
+        quantity = int(product.stock)
+        price = int(product.p_price)
+        stock = (quantity * price)
+    
+    
+        context={
+       "allproduct":items,
+       "product":product,
+       "history":history,
+       'company':  company, 
+       "comments":comments,
+       'stock': stock,
+       
+       
+        }
+    
+        return render(request,'demo.html',context)  
+
+    # # Retrieve all the comments for the product
+    # comments = Comments_item.objects.filter(item=product_id).values_list('content', flat=True)
+
+    # response_data = {'comments': list(comments)}
+    # return JsonResponse(response_data)
+
+def salesby_item(request):
+    items = sales_item.objects.all()
+    company_data = company_details.objects.get(user=request.user)
+    return render(request, 'salesby_item.html', {'items': items, 'company_data': company_data})  
+def salesgraph(request):
+    company=company_details.objects.get(user=request.user)
+    user_id=request.user
+    items=AddItem.objects.all()
+    labels = [items.name for item in items]
+    # values = [item.value for item in items]
+
+    
+    
+    context={
+
+       "allproduct":items,
+       'labels':labels,
+    #    "product":product,
+    #    "history":history,
+       'company':  company, 
+    #    "comments":comments,
+    #    'stock': stock,
+        'label': 'Line Chart',
+        # 'labels': labels,
+        # 'values': values,
+        'chart_type': 'bar'
+    }
+   
+    return render(request,'salesgraph.html',context)  
+    
+# def chart_data(request):
+
+#     data = ChartData.objects.all()
+    
+    
+#     chart_data = {
+#         'label': 'Line Chart',
+#         'labels': labels,
+#         'values': values,
+#         'chart_type': 'bar'
+#     }
+    
+#     return JsonResponse(chart_data)
+

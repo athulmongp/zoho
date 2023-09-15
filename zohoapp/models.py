@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class company_details(models.Model):
 
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
@@ -709,10 +710,7 @@ class Project(models.Model):
         return self.name
         
         
-class Comments_item(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE,default='')
-    item=models.ForeignKey(AddItem,on_delete=models.CASCADE,null=True,blank=True)
-    content = models.TextField(max_length=255,null=True,blank=True)
+
     # def __str__(self):
     #     return f"Comment by {self.user.username} on {self.item}"
     
@@ -1172,3 +1170,9 @@ class EWayBillItem(models.Model):
     tax = models.DecimalField(max_digits=10, decimal_places=2,null=True)
     discount = models.DecimalField(max_digits=10, decimal_places=2,null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2,null=True)     
+
+
+class Comments_item(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,default='')
+    item=models.ForeignKey(AddItem,on_delete=models.CASCADE,null=True,blank=True)
+    content = models.TextField(max_length=255,null=True,blank=True)    

@@ -61,7 +61,7 @@
         <tbody>
           {% for v in view %}
           <tr class="{% if v.satus == 'active' or v.satus == 'Active' %}active{% elif v.satus == 'inactive' or v.satus == 'Inactive' %}inactive{% endif %}">
-            <td class="item-name-cell" onclick="location.href ='{% url 'detail' v.id %}'">{{ v.Name }}</td>
+            <td class="item-name-cell" onclick="location.href ='{% url "detail" v.id %}'">{{ v.Name }}</td>
             <td>{{ v.s_desc }}</td>
             <td>{{ v.s_price }}</td>
             <td>{{ v.p_price }}</td>
