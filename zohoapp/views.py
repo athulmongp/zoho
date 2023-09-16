@@ -11773,20 +11773,25 @@ def salesby_item(request):
     items = sales_item.objects.all()
     company_data = company_details.objects.get(user=request.user)
     return render(request, 'salesby_item.html', {'items': items, 'company_data': company_data})  
-def salesgraph(request):
+def salesgraph(request,product):
     company=company_details.objects.get(user=request.user)
     user_id=request.user
-    items=AddItem.objects.all()
-    labels = [items.name for item in items]
+    items=sales_item.objects.filter(product=product)
+
+    print(items)
+    # labels = [items.name for item in items]
     # values = [item.value for item in items]
+    product=AddItem.objects.all()
+    name=items
 
     
     
     context={
 
        "allproduct":items,
-       'labels':labels,
-    #    "product":product,
+       
+       'name':name,
+       "product":product,
     #    "history":history,
        'company':  company, 
     #    "comments":comments,

@@ -1171,7 +1171,7 @@ class EWayBillItem(models.Model):
     discount = models.DecimalField(max_digits=10, decimal_places=2,null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2,null=True)     
 
-
+# .........athul........
 class Comments_item(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,default='')
     item=models.ForeignKey(AddItem,on_delete=models.CASCADE,null=True,blank=True)

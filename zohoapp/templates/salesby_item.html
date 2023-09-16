@@ -10,14 +10,14 @@
         
     
     .printable-content table {
-        margin: 0 auto;
+        margin: 10px;
     }
         .printable-content, .printable-content * {
             visibility: visible;
         }
         .printable-content {
             width: 200%;
-            max-width: 100%;
+            max-width: 80%;
             padding: 20px;
             margin: 30 auto;
            
@@ -51,7 +51,7 @@
         </div>
         <div class="d-flex">
         <!-- <button class="btn btn-light mr-3 " id="pdf" onclick="display()">Print</button> -->
-        <a class="btn btn-light mr-3"  href="{% url 'salesgraph' %}">Graph</a>
+        <a class="btn btn-light mr-3"  href="">Graph</a>
     <!-- Print button -->
     <button class="btn btn-light mr-3 " id="pdf" onclick="display()">Print</button>
     
@@ -94,7 +94,7 @@
         <tbody>
             {% for c in items %}
             <tr>
-                <td style="color: #ccc;">{{ c.sale.sales_date }}</td>
+                <td style="color: #ccc;"><a href="{% url 'salesgraph' c.product %}">{{ c.sale.sales_date }}</a></td>
                 <td style="color: #ccc;">{{ c.product }}</td>
                 <td style="color: #ccc;">{{ c.sale.sales_no }}</td>
                 <td style="color: #ccc;">{{ c.quantity }}</td>
