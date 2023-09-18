@@ -109,19 +109,22 @@
                         
                     </div>
                     <div class="row mb-5">
-                        <div class="col-md-4"></div>
+                        <!-- <div class="col-md-4"></div> -->
                         
 
-                        <div class="col"><label for="">Start Date</label><br>
-                            <input type="date" style="border-radius: 10px;padding: 6px; width: 100%;">
-                            </div>
-                        <div class="col">
-                            <label for="">End Date</label><br>
-                            <input type="date"  style="border-radius: 10px;padding: 6px; width: 100%;"></div>
-                        <div class="col">
-                                <button class="btn btn-primary" style="margin-top: 23px;">Filter</button></div>    
-                    </div>
-                    <hr>
+                        <!-- <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="col"><label for="">Start Date</label><br>
+                                <input  type="date" name="start" id="start" style="border-radius: 10px;padding: 6px; width: 100%;">
+                                </div>
+                            <div class="col">
+                                <label for="">End Date</label><br>
+                                <input type="date" name="end" id="end" style="border-radius: 10px;padding: 6px; width: 100%;"></div>
+                            <div class="col">
+                                    <button type="submit" class="btn btn-primary" style="margin-top: 23px; width: 80%;padding: 10px;border-radius: 10px;"><a href="{% url 'filtersalesgraph' name %}"> Filter</a></button></div>
+                        </form>     -->
+                    <!-- </div>
+                    <hr> -->
                     <div style="margin-top: 20px; color: white;">
                         <canvas id="myChart" style="color: white;"></canvas>
                       </div>
@@ -138,7 +141,8 @@
                             datasets: [{
                               label: '# of Votes',
                               data: [{% for name in allproduct %}"{{name.quantity}}",{% endfor %}],
-                              borderWidth: 1
+                              borderWidth: 1,
+                              xColor:'white'
                               
                               
                             }]

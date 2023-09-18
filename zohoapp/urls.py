@@ -558,6 +558,8 @@ urlpatterns = [
     path('sort_product_hsn/<int:id>', views.sort_product_hsn, name='sort_product_hsn'),
     path('commentproduct/<int:product_id>', views.commentproduct, name='commentproduct'),
     path('salesgraph/<str:product>', views.salesgraph, name='salesgraph'),
+    path('salesby_item_filter/<str:date>', views.salesby_item_filter, name='salesby_item_filter'),
+   
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
     

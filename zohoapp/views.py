@@ -11773,25 +11773,54 @@ def salesby_item(request):
     items = sales_item.objects.all()
     company_data = company_details.objects.get(user=request.user)
     return render(request, 'salesby_item.html', {'items': items, 'company_data': company_data})  
+
+def salesby_item_filter(request,date):
+    items = sales_item.objects.all()
+    company_data = company_details.objects.get(user=request.user)
+    return render(request, 'salesby_item.html', {'items': items, 'company_data': company_data})  
+
 def salesgraph(request,product):
     company=company_details.objects.get(user=request.user)
     user_id=request.user
-    items=sales_item.objects.filter(product=product)
+    item=sales_item.objects.filter(product=product)
 
-    print(items)
+    # print(items)
     # labels = [items.name for item in items]
     # values = [item.value for item in items]
-    product=AddItem.objects.all()
-    name=items
+    products=AddItem.objects.all()
+    name=product
+    print(name)
+    if request.method == "post":
+        start=request.POST.get('start')
+        End=request.POST.get('end')
+        items=sales_item.objects.filter(sale__sales_date__range = (start,End))
+        name=product 
+        context={
+
+            "allproduct":items,
+       
+            'name':name,
+
+            "product":products,
+    
+            'company':  company, 
+    
+            'label': 'Line Chart',
+       
+            'chart_type': 'bar'
+        }
+        print('2')
+
+        return redirect('salesgraph',context) 
 
     
     
     context={
 
-       "allproduct":items,
+       "allproduct":item,
        
        'name':name,
-       "product":product,
+       "product":products,
     #    "history":history,
        'company':  company, 
     #    "comments":comments,
@@ -11801,20 +11830,9 @@ def salesgraph(request,product):
         # 'values': values,
         'chart_type': 'bar'
     }
-   
+    print('1')
     return render(request,'salesgraph.html',context)  
-    
-# def chart_data(request):
+ 
 
-#     data = ChartData.objects.all()
-    
-    
-#     chart_data = {
-#         'label': 'Line Chart',
-#         'labels': labels,
-#         'values': values,
-#         'chart_type': 'bar'
-#     }
-    
-#     return JsonResponse(chart_data)
+       
 
