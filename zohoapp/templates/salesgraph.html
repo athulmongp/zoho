@@ -109,22 +109,21 @@
                         
                     </div>
                     <div class="row mb-5">
-                        <!-- <div class="col-md-4"></div> -->
-                        
-
-                        <!-- <form action="" method="post">
-                            {% csrf_token %}
-                            <div class="col"><label for="">Start Date</label><br>
-                                <input  type="date" name="start" id="start" style="border-radius: 10px;padding: 6px; width: 100%;">
-                                </div>
-                            <div class="col">
-                                <label for="">End Date</label><br>
-                                <input type="date" name="end" id="end" style="border-radius: 10px;padding: 6px; width: 100%;"></div>
-                            <div class="col">
-                                    <button type="submit" class="btn btn-primary" style="margin-top: 23px; width: 80%;padding: 10px;border-radius: 10px;"><a href="{% url 'filtersalesgraph' name %}"> Filter</a></button></div>
-                        </form>     -->
-                    <!-- </div>
-                    <hr> -->
+                        <div class="col-md-4">
+                            
+                        </div>
+                        <div class="col">
+                            <form action="{% url 'salesby_item_graph_filter' name %}" method="post">
+                                {% csrf_token %}
+                                From <input type="date" id="d1" name="d1"  style="width: 40%; border-radius: 8px;padding: 8px;">
+                                To <input type="date" id="d2" name="d2"  style="width: 40%; border-radius: 8px;padding: 8px;">
+                                <button class=" fa fa-filter btn-primary" style="padding: 10px;border-radius: 10px;"></button>
+                                
+                            </form>
+                    
+                        </div>
+                    </div>
+                    <hr>
                     <div style="margin-top: 20px; color: white;">
                         <canvas id="myChart" style="color: white;"></canvas>
                       </div>
@@ -142,7 +141,7 @@
                               label: '# of Votes',
                               data: [{% for name in allproduct %}"{{name.quantity}}",{% endfor %}],
                               borderWidth: 1,
-                              xColor:'white'
+                              lineColor:'white',
                               
                               
                             }]

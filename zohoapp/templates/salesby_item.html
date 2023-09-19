@@ -12,6 +12,7 @@
         .printable-content table {
             margin: 10px;
         }
+       
 
         .printable-content,
         .printable-content * {
@@ -22,7 +23,7 @@
             width: 200%;
             max-width: 80%;
             padding: 20px;
-            margin: 30 auto;
+           
 
 
         }
@@ -40,31 +41,34 @@
         color: #000;
     }
 </style>
+<div>
+    <center><h2 class="text" style="color: aliceblue;">SALES BY ITEMS</h2></center>
+    <hr>
+</div>
 
-<div class="d-flex justify-content-between align-items-center">
-    <div class="d-flex">
-        <div class="mr-3">
+<div class="d-flex justify-content-between align-items-center mb-5">
+     <div class="d-flex">
+        <!--<div class="mr-3"> -->
             <!-- Date range calendar input -->
 
-            <div id="reportrange"
+            <!-- <div id="reportrange"
                 style="cursor: pointer; padding: 5px 10px;  width: 40;  color: #010101; background-color: white;">
                 <i class="fa fa-calendar"></i>&nbsp;
-
                 <span></span>
                 <i class="fa fa-caret-down"></i>
             </div>
-        </div>
+        </div> -->
         <!-- <a href="{% url 'customize_report1' %}" style="margin-left: 10px;">Customize report <i class="fa fa-cog"></i></a> -->
     </div>
     <div class="d-flex">
         <!-- <button class="btn btn-light mr-3 " id="pdf" onclick="display()">Print</button> -->
         <!-- <a class="btn btn-light mr-3" href="">Graph</a> -->
         <!-- Print button -->
-        <button class="btn btn-light mr-3 " id="pdf" onclick="display()">Print</button>
+        <button class="btn btn-primary mr-3 " id="pdf" onclick="display()">Print</button>
 
         <div style="width:3px;"></div>
         <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown"
+            <button class="btn btn-primary dropdown-toggle " type="button" id="exportDropdown" data-bs-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 Export
             </button>
@@ -73,29 +77,48 @@
                 <a class="dropdown-item" href="#" onclick="exportAsPDF()">PDF</a>
                 <a class="dropdown-item" href="#" onclick="exportToExcel()">XLS (Excel)</a>
             </div>
-            <a href="{% url 'reports' %}" class="btn btn-light" style="  color: rgb(4, 4, 4);">
+            <a href="{% url 'reports' %}" class="btn btn-danger" >
                 <i class="fa fa-times-circle"></i>
             </a>
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-6">
+        <input type="text" id="searchInput" placeholder="Search...." style="width: 70%; border-radius: 10px;padding: 8px;">
+
+    </div>
+    <div class="col">
+        <form action="{% url 'salesby_item_filter' %}" method="post">
+            {% csrf_token %}
+            From <input type="date" id="d1" name="d1"  style="width: 40%; border-radius: 10px;padding: 8px;">
+            To <input type="date" id="d2" name="d2"  style="width: 40%; border-radius: 10px;padding: 8px;">
+            <button class=" fa fa-filter btn-primary" style="padding: 10px;border-radius: 10px;"></button>
+            
+        </form>
+
+    </div>
+</div>
 <div class="printable-wrapper" id="container-to-print">
+    
     <div class="printable-content">
-        <center>
-            <h1 class="text" style="color: aliceblue;">{{ company_data.company_name }}</h1>
-            <h4 class="text" style="color: aliceblue;">Sales by Item</h4>
-            <h5 class="text" style="color: aliceblue;">Basis: Accrual</h5>
-            <p class="text" style="color: white;" id="date-range-display">From {{ start_date }} To {{ end_date }}</p>
+        
+        
+            <!-- <h1 class="text" style="color: aliceblue;">{{ company_data.company_name }}</h1>
+            
+            <h5 class="text" style="color: aliceblue;">Basis: Accrual</h5> -->
+            <!-- <p class="text" style="color: white;" id="date-range-display">{{ start_date }} {{ end_date }}</p> -->
             <!-- <p class="text" style="color: aliceblue;">From 21 Jan 2023 To 21 Jan 2024</p> -->
-        </center>
-        <table class="table table-bordered table-striped mt-4" id="table">
+            
+        
+        <table class="table table-bordered table-striped mt-4" id="table" >
             <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Item Name</th>
-                    <th>Sale No</th>
-                    <th>Quantity sold</th>
-                    <th>Amount</th>
+                <tr style="color: white;">
+                    <th><b>Date</b></th>
+                    <th><b>Item Name</b></th>
+                    <th><b>Sale No</b></th>
+                    <th><b>Quantity sold</b></th>
+                    <th><b>Amount</b></th>
 
                 </tr>
             </thead>
@@ -105,7 +128,7 @@
 
 
                 <tr>
-                    <td style="color: #ccc;" id="date"><a href="{% url 'salesgraph' c.product %}">{{ c.sale.sales_date}}
+                    <td style="color: #ccc;" id="date"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.sale.sales_date}}
                         </a></td>
                     <td style="color: #ccc;">{{ c.product }}</td>
                     <td style="color: #ccc;">{{ c.sale.sales_no }}</td>
@@ -125,6 +148,42 @@
 </div>
 
 <script>
+
+  // Function to handle the search
+  function searchTable() {
+      let input, filter, table, tr, td, i, j, txtValue;
+      input = document.getElementById("searchInput");
+      filter = input.value.toLowerCase();
+      table = document.getElementById("tableBody");
+      tr = table.getElementsByTagName("tr");
+
+      // Loop through all table rows (excluding the first row, which contains the column headers)
+      for (i = 1; i < tr.length; i++) {
+        let rowVisible = false;
+        td = tr[i].getElementsByTagName("td");
+
+        // Loop through all table cells (columns) in each row
+        for (j = 0; j < td.length; j++) {
+          if (td[j]) {
+            txtValue = td[j].textContent || td[j].innerText;
+            if (txtValue.toLowerCase().indexOf(filter) > -1) {
+              rowVisible = true;
+              break;
+            }
+          }
+        }
+  
+        // Show/hide the row based on the search results
+        tr[i].style.display = rowVisible ? "" : "none";
+      }
+    }
+  
+    // Attach the search function to the input field's "input" event
+    document.getElementById("searchInput").addEventListener("input", searchTable);
+
+
+
+
     //    function exportToPDF() {
     //     console.log("Exporting to PDF...");
 
@@ -250,9 +309,27 @@
     });
 
 
-    function fetch_data(start, end) {
+    $(function(){
+        // Declare variables
+        var start, end, table, tr, td,date, i, txtValue;
+        start = document.getElementById("d1").value;
+        end = document.getElementById("d2").value;
+        table = document.getElementById("tableBody");
+        tr = table.getElementsByTagName("tr");
 
-    }
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            date= tr[i].getElementById("date").value;
+      
+
+                if (start >  date < end) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+ 
+        }
+    });
 
     $(function () {
         var start = moment().subtract(29, 'days');
@@ -260,7 +337,9 @@
 
         function cb(start, end) {
             $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-            $('#date-range-display').html('From ' + start.format('MMMM D, YYYY') + ' To ' + end.format('MMMM D, YYYY'));
+            // $('#date-range-display').html('From ' + start.format('MMMM D, YYYY') + ' To ' + end.format('MMMM D, YYYY'));
+            document.getElementById('d1').value = start.format('MMMM D, YYYY');
+            document.getElementById('d2').value = end.format('MMMM D, YYYY');
 
 
             // $(document).ready(function () {
@@ -286,28 +365,28 @@
             // });
 
 
-        $("#reportrange").on('click',function () {
-                var date = $(this).val();
+            // $("#reportrange").on('click',function () {
+            //         var date = $(this).val();
 
-        $.ajaxSetup({
-                    headers: {
-                        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
-                    }
-                });
-        $.ajax({
-                    url: "",
-                    method: 'POST',
-                    data: {
-                        'date': date
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.taken) {
-                            alert("Username taken");
-                        }
-                    }
-                });
-            });
+            // $.ajaxSetup({
+            //             headers: {
+            //                 "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+            //             }
+            //         });
+            // $.ajax({
+            //             url: "",
+            //             method: 'POST',
+            //             data: {
+            //                 'date': date
+            //             },
+            //             dataType: 'json',
+            //             success: function (data) {
+            //                 if (data.taken) {
+            //                     alert("Username taken");
+            //                 }
+            //             }
+            //         });
+            //     });
         }
 
 
@@ -337,6 +416,8 @@
 
 
     });
+
+
 
 
 
@@ -396,6 +477,8 @@
         adjustPrintingView();
         window.print();
     });
+
+
 
 
 

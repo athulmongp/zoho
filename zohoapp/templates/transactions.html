@@ -233,6 +233,7 @@
                   <td>{{ v.estimate.estimate_date }}</td>
                   <td>{{ v.quantity }}</td>
                   <td>{{ v.rate }}</td>
+                  <td>{{ v.status }}</td>
 
                   <td>{{ product.status }}</td>
                 {% endfor %}
@@ -245,7 +246,7 @@
                   <td>{{ s.sale.sales_date }}</td>
                   <td>{{ s.quantity }}</td>
                   <td>{{ s.rate }}</td>
-                  <td>{{ product.status }}</td>
+                  <td>{{ s.status }}</td>
                 {% endfor %}
                 </tr>
                 
@@ -256,7 +257,7 @@
                   <td>{{ r.ri.start }}</td>
                   <td>{{ r.quantity }}</td>
                   <td>{{ r.rate }}</td>
-                  <td>{{ product.status }}</td>
+                  <td>{{ r.status }}</td>
                 {% endfor %}
                 </tr>
 
@@ -267,7 +268,7 @@
                   <td>{{ p.PO.Ord_date }}</td>
                   <td>{{ p.quantity }}</td>
                   <td>{{ p.rate }}</td>
-                  <td>{{ product.status }}</td>
+                  <td>{{ p.status }}</td>
                 {% endfor %}
                 </tr>
 

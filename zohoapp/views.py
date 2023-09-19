@@ -11774,10 +11774,20 @@ def salesby_item(request):
     company_data = company_details.objects.get(user=request.user)
     return render(request, 'salesby_item.html', {'items': items, 'company_data': company_data})  
 
-def salesby_item_filter(request,date):
-    items = sales_item.objects.all()
+def salesby_item_filter(request):
     company_data = company_details.objects.get(user=request.user)
-    return render(request, 'salesby_item.html', {'items': items, 'company_data': company_data})  
+    item = sales_item.objects.all()
+    if request.method == 'POST':
+        s=request.POST['d1']
+        start=str(s)
+        e=request.POST['d2']
+        end=str(e)
+        items = sales_item.objects.filter(sale__sales_date__range=[start,end])
+        return render(request, 'salesby_item.html', {'items': items, 'company_data': company_data})  
+
+    
+
+    return render(request, 'salesby_item.html', {'items': item, 'company_data': company_data})  
 
 def salesgraph(request,product):
     company=company_details.objects.get(user=request.user)
@@ -11790,28 +11800,7 @@ def salesgraph(request,product):
     products=AddItem.objects.all()
     name=product
     print(name)
-    if request.method == "post":
-        start=request.POST.get('start')
-        End=request.POST.get('end')
-        items=sales_item.objects.filter(sale__sales_date__range = (start,End))
-        name=product 
-        context={
-
-            "allproduct":items,
-       
-            'name':name,
-
-            "product":products,
     
-            'company':  company, 
-    
-            'label': 'Line Chart',
-       
-            'chart_type': 'bar'
-        }
-        print('2')
-
-        return redirect('salesgraph',context) 
 
     
     
@@ -11832,6 +11821,56 @@ def salesgraph(request,product):
     }
     print('1')
     return render(request,'salesgraph.html',context)  
+
+def salesby_item_graph_filter(request,product):
+    company=company_details.objects.get(user=request.user)
+    user_id=request.user
+    item=sales_item.objects.filter(product=product)
+
+    products=AddItem.objects.all()
+    name=product
+    print(name)
+    if request.method == 'POST':
+        s=request.POST['d1']
+        start=str(s)
+        e=request.POST['d2']
+        end=str(e)
+        items = sales_item.objects.filter(product=product,sale__sales_date__range=[start,end])
+        products=AddItem.objects.all()
+        context={
+
+       "allproduct":items,
+       
+       'name':name,
+       "product":products,
+    #    "history":history,
+       'company':  company, 
+    #    "comments":comments,
+    #    'stock': stock,
+        'label': 'Line Chart',
+        # 'labels': labels,
+        # 'values': values,
+        'chart_type': 'bar'
+        }
+        return render(request, 'salesgraph.html',context)  
+
+    
+    context={
+
+       "allproduct":item,
+       
+       'name':name,
+       "product":products,
+    #    "history":history,
+       'company':  company, 
+    #    "comments":comments,
+    #    'stock': stock,
+        'label': 'Line Chart',
+        # 'labels': labels,
+        # 'values': values,
+        'chart_type': 'bar'
+    }
+    return render(request, 'salesgraph.html', context)      
  
 
        
