@@ -64,11 +64,11 @@
         <!-- <button class="btn btn-light mr-3 " id="pdf" onclick="display()">Print</button> -->
         <!-- <a class="btn btn-light mr-3" href="">Graph</a> -->
         <!-- Print button -->
-        <button class="btn btn-primary mr-3 " id="pdf" onclick="display()">Print</button>
+        <button class="btn btn-outline-light mr-3 " style="background-color: rgb(214, 141, 5);color: white;" id="pdf" onclick="display()">Print</button>
 
         <div style="width:3px;"></div>
         <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle " type="button" id="exportDropdown" data-bs-toggle="dropdown"
+            <button class="btn btn-outline-light dropdown-toggle " style="background-color: rgb(214, 141, 5);color: white;" type="button" id="exportDropdown" data-bs-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 Export
             </button>
@@ -77,23 +77,23 @@
                 <a class="dropdown-item" href="#" onclick="exportAsPDF()">PDF</a>
                 <a class="dropdown-item" href="#" onclick="exportToExcel()">XLS (Excel)</a>
             </div>
-            <a href="{% url 'reports' %}" class="btn btn-danger" >
-                <i class="fa fa-times-circle"></i>
+            <a href="{% url 'reports' %}" class="btn btn-danger btn-outline-light bg-danger" >
+                <i class="fa fa-times-circle "></i>
             </a>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-6">
-        <input type="text" id="searchInput" placeholder="Search...." style="width: 70%; border-radius: 10px;padding: 8px;">
+        <input type="text" id="searchInput" placeholder="Search...." style="width: 70%; border-radius: 10px;padding: 8px; border: 3px solid rgb(214, 141, 5);">
 
     </div>
     <div class="col">
         <form action="{% url 'salesby_item_filter' %}" method="post">
             {% csrf_token %}
-            From <input type="date" id="d1" name="d1"  style="width: 40%; border-radius: 10px;padding: 8px;">
-            To <input type="date" id="d2" name="d2"  style="width: 40%; border-radius: 10px;padding: 8px;">
-            <button class=" fa fa-filter btn-primary" style="padding: 10px;border-radius: 10px;"></button>
+            From <input type="date" id="d1" name="d1"  style="width: 40%; border-radius: 10px;padding: 8px;border: 3px solid rgb(214, 141, 5);" required>
+            To <input type="date" id="d2" name="d2"  style="width: 40%; border-radius: 10px;padding: 8px;border: 3px solid rgb(214, 141, 5);" required>
+            <button class=" fa fa-filter btn-warning btn-outline-light" style="padding: 10px;border-radius: 10px;background-color: rgb(214, 141, 5);color: white;"></button>
             
         </form>
 
@@ -113,12 +113,12 @@
         
         <table class="table table-bordered table-striped mt-4" id="table" >
             <thead>
-                <tr style="color: white;">
-                    <th><b>Date</b></th>
-                    <th><b>Item Name</b></th>
-                    <th><b>Sale No</b></th>
-                    <th><b>Quantity sold</b></th>
-                    <th><b>Amount</b></th>
+                <tr style="color: rgb(214, 141, 5)">
+                    <th style="color: rgb(214, 141, 5)"><b>Date</b></th>
+                    <th style="color: rgb(214, 141, 5)"><b>Item Name</b></th>
+                    <th style="color: rgb(214, 141, 5)"><b>Sale No</b></th>
+                    <th style="color: rgb(214, 141, 5)"><b>Quantity sold</b></th>
+                    <th style="color: rgb(214, 141, 5)"><b>Amount</b></th>
 
                 </tr>
             </thead>
@@ -128,12 +128,12 @@
 
 
                 <tr>
-                    <td style="color: #ccc;" id="date"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.sale.sales_date}}
+                    <td style="color: #ccc;" id="date"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.sale.sales_date }}
                         </a></td>
-                    <td style="color: #ccc;">{{ c.product }}</td>
-                    <td style="color: #ccc;">{{ c.sale.sales_no }}</td>
-                    <td style="color: #ccc;">{{ c.quantity }}</td>
-                    <td style="color: #ccc;">{{ c.total }}</td>
+                    <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.product }}</a></td>
+                    <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.sale.sales_no }}</a></td>
+                    <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.quantity }}</a></td>
+                    <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.total }}</td>
                     {% endfor %}
                 </tr>
 

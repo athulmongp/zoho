@@ -52,13 +52,13 @@
 
 <section>
     <div class="row p-3">
-        <div class="list col-4 col-lg-3 col-md-3  col-sm-2 py-3">
-            <div class="header ">
-                <h5>All Items</h5>
+        <div class="list col-4 col-lg-3 col-md-3  col-sm-2 py-5">
+            <div class="header margin-top:20px">
+                <h3>All Items</h3>
             </div>
             <div class="searchbar" style="display: flex;">
                 <input type="text" id="searchInput" class="form-control bg-dark" placeholder="Search Items..."
-                    style="color: rgb(255, 255, 255);background: transparent;margin-right: 5px;">
+                    style="color: rgb(255, 255, 255);background: transparent;margin-right: 5px;border: 2px solid rgb(214, 141, 5);">
                 <!-- <a class="btn btn-primary mx-1" href="" data-bs-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false" role="button">
           <i class="fa fa-filter"></i>
@@ -75,8 +75,8 @@
             <table class="table table-borderless" id="mytable">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Stock</th>
+                        <th style="color: rgb(214, 141, 5);">Name</th>
+                        <th style="color: rgb(214, 141, 5);">Stock</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -91,7 +91,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="overview col-9 col-lg-9 col-md-10  col-sm-10 py-2" style="background-color: black;">
+        <div class="overview col-9 col-lg-9 col-md-10  col-sm-10 " style="background-color: black;">
             <div id="overview">
                 <div class="row">
                     <div class="col">
@@ -100,7 +100,8 @@
                          {{ forloop.counter }}
                             
                             {% if forloop.first %} -->
-                              <h3 class="px-2 pb-2" id="id1" style="color: aliceblue;">{{name.product}}</h3>
+                            
+                              <h1 class="p-2" id="id1"  style="color: rgb(214, 141, 5)"><b>{{name.product}}</b></h1>
                               <hr>
                              
                               
@@ -108,22 +109,24 @@
                         {% endfor %} -->
                         
                     </div>
-                    <div class="row mb-5">
+                    <div class="row mb-3">
                         <div class="col-md-4">
                             
                         </div>
                         <div class="col">
                             <form action="{% url 'salesby_item_graph_filter' name %}" method="post">
                                 {% csrf_token %}
-                                From <input type="date" id="d1" name="d1"  style="width: 40%; border-radius: 8px;padding: 8px;">
-                                To <input type="date" id="d2" name="d2"  style="width: 40%; border-radius: 8px;padding: 8px;">
-                                <button class=" fa fa-filter btn-primary" style="padding: 10px;border-radius: 10px;"></button>
+                                From <input type="date" id="d1" name="d1"  style="width: 40%; border-radius: 8px;padding: 5px; border: 3px solid rgb(214, 141, 5);" required>
+                                To <input type="date" id="d2" name="d2"  style="width: 40%; border-radius: 8px;padding: 5px;border: 3px solid rgb(214, 141, 5);" required>
+                                <button class=" fa fa-filter btn-warning btn-outline-light" style="padding: 10px;border-radius: 10px;background-color: rgb(214, 141, 5);color: white;"></button>
                                 
                             </form>
                     
                         </div>
+                       
                     </div>
-                    <hr>
+                    <hr >
+                    
                     <div style="margin-top: 20px; color: white;">
                         <canvas id="myChart" style="color: white;"></canvas>
                       </div>
@@ -138,10 +141,11 @@
                           data: {
                             labels: [{% for name in allproduct %}"{{name.sale.sales_date}}",{% endfor %}],
                             datasets: [{
-                              label: '# of Votes',
+                              label: '# of sold',
                               data: [{% for name in allproduct %}"{{name.quantity}}",{% endfor %}],
                               borderWidth: 1,
                               lineColor:'white',
+                              borderColor:'rgb(214, 141, 5)',
                               
                               
                             }]
