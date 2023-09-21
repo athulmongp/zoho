@@ -9,11 +9,12 @@
     <div class="row mt-3 " style="margin-top: -3rem; margin-left:1rem;" >
       <div class="col-md-10 form-inline ">
         <div class="row">
-          <div class="col-md-9"><a class="text-white" style="font-size: 2rem;">All Items</a></div>
-          <input type="text"  id="searchInput" class="form-control bg-dark" placeholder="Search Items..." style="margin-top: 25px; width: 30%;">
+          <center><div class="col-md-9"><a class="text-white " style="font-size: 2rem;"><b>ALL  ITEMS</b></a></div></center>
+          <hr>
+          <input type="text"  id="searchInput" class="form-control bg-dark" placeholder="Search Items..." style="margin-top: 25px; width: 30%;border: 2px solid rgb(214, 141, 5);">
           
           <div class="btn-group" role="group"  style="margin-left: 1rem;margin-top:1.7rem;display:inline-flex;width:4rem;height:2rem;">
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button id="btnGroupDrop1" type="button" class="btn text-white btn-outline-light dropdown-toggle" style="background-color: rgb(214, 141, 5);border-radius: 5px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Sort
             </button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -28,7 +29,7 @@
             
           </div>
           <div class="btn-group" role="group"  style="margin-left: 58rem;margin-top:-1.9rem;display:inline-flex;width:4rem">
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button id="btnGroupDrop1" type="button" class="btn btn-outline-light dropdown-toggle" style="background-color: rgb(214, 141, 5);border-radius: 5px;color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Filter
             </button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -38,24 +39,25 @@
             </div>
             
           </div>
-          <div class="col-md-9 form-inline"  style="margin-top: -2rem; margin-left:64rem;"><a style="color: #000;" class="btn btn-secondary " href="{% url 'additem' %}"><i class="fa-solid fa-plus "></i>New Item</a>
+          <div class="col-md-9 form-inline"  style="margin-top: -2rem; margin-left:64rem;"><a style="background-color: rgb(214, 141, 5);border-radius: 5px;color: white;" class="btn btn-outline-light " href="{% url 'additem' %}"><i class="fa-solid fa-plus "></i>New Item</a>
             <a style="color: #ccc;"href="#3"> </a>
           </div> 
         </div>
       </div>
     </div>  
+    
     <div id="tableContainer" style="max-height: 500px;">
-      <table id="dataTable" class="table text-white mt-2" style="width: 100%; margin-top: 40px;">
+      <table id="dataTable" class="table text-white mt-3" style="width: 100%; margin-top: 40px;">
         <thead>
           <tr>
-            <th class="col" id="nameHeader">Name</th>
-            <th class="col">Description</th>
-            <th class="col">Sales Rate</th>
-            <th class="col">Purchase Rate</th>
-            <th class="col">HSN/SAC</th>
-            <th class="col" id="stockHeader">Stock on Inventory</th>
-            <th class="col">Usage Unit</th>
-            <th class="col">Status</th>
+            <th class="col" id="nameHeader" style="color: rgb(214, 141, 5);">Name</th>
+            <th class="col" style="color: rgb(214, 141, 5);">Description</th>
+            <th class="col" style="color: rgb(214, 141, 5);">Sales Rate</th>
+            <th class="col" style="color: rgb(214, 141, 5);">Purchase Rate</th>
+            <th class="col" style="color: rgb(214, 141, 5);">HSN/SAC</th>
+            <th class="col" id="stockHeader" style="color: rgb(214, 141, 5);">Stock on Inventory</th>
+            <th class="col" style="color: rgb(214, 141, 5);">Usage Unit</th>
+            <th class="col" style="color: rgb(214, 141, 5);">Status</th>
           </tr>
         </thead>
         <tbody>

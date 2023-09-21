@@ -115,8 +115,10 @@
             <thead>
                 <tr style="color: rgb(214, 141, 5)">
                     <th style="color: rgb(214, 141, 5)"><b>Date</b></th>
+                    <th style="color: rgb(214, 141, 5)"><b>Item Number</b></th>
+                    <th style="color: rgb(214, 141, 5)"><b>Type</b></th>
                     <th style="color: rgb(214, 141, 5)"><b>Item Name</b></th>
-                    <th style="color: rgb(214, 141, 5)"><b>Sale No</b></th>
+                    
                     <th style="color: rgb(214, 141, 5)"><b>Quantity sold</b></th>
                     <th style="color: rgb(214, 141, 5)"><b>Amount</b></th>
 
@@ -128,12 +130,28 @@
 
 
                 <tr>
-                    <td style="color: #ccc;" id="date"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.sale.sales_date }}
+                    <td style="color: #ccc;" id="date"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.inv.due_date }}
                         </a></td>
+                    <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.inv.invoice_no }}</a></td>
+                    <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.product %}">Invoice</a></td>
                     <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.product }}</a></td>
-                    <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.sale.sales_no }}</a></td>
+                    
                     <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.quantity }}</a></td>
                     <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.product %}">{{ c.total }}</td>
+                    {% endfor %}
+                </tr>
+                {% for c in items2 %}
+
+
+                <tr>
+                    <td style="color: #ccc;" id="date"><a class="text-white" href="{% url 'salesgraph' c.iname %}">{{ c.ri.start }}
+                        </a></td>
+                    <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.iname %}">{{ c.ri.order_num }}</a></td>
+                    <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.iname %}">Recurring Invoice</a></td>
+                    <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.iname %}">{{ c.iname }}</a></td>
+                    
+                    <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.iname %}">{{ c.quantity }}</a></td>
+                    <td style="color: #ccc;"><a class="text-white" href="{% url 'salesgraph' c.iname %}">{{ c.amt }}</td>
                     {% endfor %}
                 </tr>
 

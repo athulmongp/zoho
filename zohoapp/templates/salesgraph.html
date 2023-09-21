@@ -101,7 +101,7 @@
                             
                             {% if forloop.first %} -->
                             
-                              <h1 class="p-2" id="id1"  style="color: rgb(214, 141, 5)"><b>{{name.product}}</b></h1>
+                              <h1 class="p-2" id="id1"  style="color: rgb(214, 141, 5)"><b>{{n.Name}}</b></h1>
                               <hr>
                              
                               
@@ -114,7 +114,7 @@
                             
                         </div>
                         <div class="col">
-                            <form action="{% url 'salesby_item_graph_filter' name %}" method="post">
+                            <form action="{% url 'salesby_item_graph_filter' name %}" method="post" style="margin-top: 10px;">
                                 {% csrf_token %}
                                 From <input type="date" id="d1" name="d1"  style="width: 40%; border-radius: 8px;padding: 5px; border: 3px solid rgb(214, 141, 5);" required>
                                 To <input type="date" id="d2" name="d2"  style="width: 40%; border-radius: 8px;padding: 5px;border: 3px solid rgb(214, 141, 5);" required>
@@ -139,10 +139,13 @@
                         new Chart(ctx, {
                           type: 'line',
                           data: {
-                            labels: [{% for name in allproduct %}"{{name.sale.sales_date}}",{% endfor %}],
+                            labels: [{% for name in items2 %}{% for n in allproduct %}"{{n.inv.due_date}}",{% endfor %}"{{name.ri.start}}",{% endfor %},
+                                     ],
+                            
                             datasets: [{
                               label: '# of sold',
-                              data: [{% for name in allproduct %}"{{name.quantity}}",{% endfor %}],
+                              data: [{% for name in items2  %}{% for n in allproduct  %}"{{n.quantity}}",{% endfor %}"{{name.quantity}}",{% endfor %},
+                                    ],
                               borderWidth: 1,
                               lineColor:'white',
                               borderColor:'rgb(214, 141, 5)',
@@ -150,10 +153,24 @@
                               
                             }]
                           },
+                        //   data2: {
+                        //     labels: [{% for n in items2 %}"{{n.ri.start }}",{% endfor %}],
+                            
+                        //     datasets: [{
+                        //       label: '# of sold',
+                        //       data: [{% for name in allproduct %}"{{name.quantity}}",{% endfor %}],
+                        //       borderWidth: 1,
+                        //       lineColor:'white',
+                        //       borderColor:'rgb(214, 141, 5)',
+                              
+                              
+                        //     }]
+                        //   },
                           options: {
                             scales: {
                               y: {
                                 beginAtZero: true
+                                
                               }
                             }
                           }

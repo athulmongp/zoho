@@ -11769,47 +11769,32 @@ def commentproduct(request, product_id):
     # response_data = {'comments': list(comments)}
     # return JsonResponse(response_data)
 
-def salesby_item(request):
-    items = sales_item.objects.all()
-    company_data = company_details.objects.get(user=request.user)
-    return render(request, 'salesby_item.html', {'items': items, 'company_data': company_data})  
 
-def salesby_item_filter(request):
-    company_data = company_details.objects.get(user=request.user)
-    item = sales_item.objects.all()
-    if request.method == 'POST':
-        s=request.POST['d1']
-        start=str(s)
-        e=request.POST['d2']
-        end=str(e)
-        items = sales_item.objects.filter(sale__sales_date__range=[start,end])
-        return render(request, 'salesby_item.html', {'items': items, 'company_data': company_data})  
 
-    
-
-    return render(request, 'salesby_item.html', {'items': item, 'company_data': company_data})  
 
 def salesgraph(request,product):
     company=company_details.objects.get(user=request.user)
     user_id=request.user
-    item=sales_item.objects.filter(product=product)
+    item=invoice_item.objects.filter(product=product)
+    items2 =recur_itemtable.objects.filter(iname=product)
+    print(items2)
 
     # print(items)
     # labels = [items.name for item in items]
     # values = [item.value for item in items]
     products=AddItem.objects.all()
+    n=AddItem.objects.get(Name=product)
     name=product
     print(name)
-    
-
-    
-    
+ 
     context={
 
        "allproduct":item,
+       "items2":items2,
        
        'name':name,
        "product":products,
+        "n":n,
     #    "history":history,
        'company':  company, 
     #    "comments":comments,
@@ -11818,6 +11803,7 @@ def salesgraph(request,product):
         # 'labels': labels,
         # 'values': values,
         'chart_type': 'bar'
+        
     }
     print('1')
     return render(request,'salesgraph.html',context)  
@@ -11825,7 +11811,8 @@ def salesgraph(request,product):
 def salesby_item_graph_filter(request,product):
     company=company_details.objects.get(user=request.user)
     user_id=request.user
-    item=sales_item.objects.filter(product=product)
+    item=invoice_item.objects.filter(product=product)
+    n=AddItem.objects.get(Name=product)
 
     products=AddItem.objects.all()
     name=product
@@ -11835,13 +11822,17 @@ def salesby_item_graph_filter(request,product):
         start=str(s)
         e=request.POST['d2']
         end=str(e)
-        items = sales_item.objects.filter(product=product,sale__sales_date__range=[start,end])
+        items =  invoice_item.objects.filter(product=product,inv__due_date__range=[start,end])
+        items2 =recur_itemtable.objects.filter(iname=product,ri__start__range=[start,end])
         products=AddItem.objects.all()
+        n=AddItem.objects.get(Name=product)
         context={
 
        "allproduct":items,
+       'items2':items2,
        
        'name':name,
+       "n":n,
        "product":products,
     #    "history":history,
        'company':  company, 
@@ -11860,6 +11851,7 @@ def salesby_item_graph_filter(request,product):
        "allproduct":item,
        
        'name':name,
+       "n":n,
        "product":products,
     #    "history":history,
        'company':  company, 
@@ -11873,5 +11865,27 @@ def salesby_item_graph_filter(request,product):
     return render(request, 'salesgraph.html', context)      
  
 
-       
+def salesby_item(request):
+    items = invoice_item.objects.all()
+    items2 =recur_itemtable.objects.all()
+ 
+    company_data = company_details.objects.get(user=request.user)
+    return render(request, 'salesby_item.html', {'items': items,'items2': items2, 'company_data': company_data})       
 
+
+def salesby_item_filter(request):
+    company_data = company_details.objects.get(user=request.user)
+    item = sales_item.objects.all()
+    items2 =recur_itemtable.objects.all()
+    if request.method == 'POST':
+        s=request.POST['d1']
+        start=str(s)
+        e=request.POST['d2']
+        end=str(e)
+        items = invoice_item.objects.filter(inv__due_date__range=[start,end])
+        items2 = recur_itemtable.objects.filter(ri__start__range=[start,end])
+        return render(request, 'salesby_item.html', {'items': items,'items2': items2, 'company_data': company_data})  
+
+    
+
+    return render(request, 'salesby_item.html', {'items': item, 'company_data': company_data})  

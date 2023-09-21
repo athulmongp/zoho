@@ -84,11 +84,11 @@
   <div class="row p-3">
     <div class="list col-4 col-lg-3 col-md-2  col-sm-2 py-3">
       <div class="header ">
-        <h5>All Items</h5>
+        <h3>All Items</h3>
       </div>
       <div class="searchbar" style="display: flex;">
         <input type="text" id="searchInput" class="form-control bg-dark" placeholder="Search Items..."
-          style="color: rgb(255, 255, 255);background: transparent;margin-right: 5px;">
+          style="color: rgb(255, 255, 255);background: transparent;margin-right: 5px; border: 2px solid rgb(214, 141, 5);">
         
 
       </div>
@@ -96,8 +96,8 @@
       <table class="table table-borderless" id="mytable">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Quantity</th>
+            <th style="color: rgb(214, 141, 5);">Name</th>
+            <th style="color: rgb(214, 141, 5);">Quantity</th>
           </tr>
         </thead>
         <tbody id="tableBody">
@@ -122,17 +122,17 @@
             <div class="container">
               <div class="row" style="margin-top: 4.2rem;">
                 <div class="col" style="margin-top: -4.2rem;">
-                  <a class="" style="font-size: 1.5rem; margin-left: 4rem; margin-top: -2rem; color: #FFCFB0;">
+                  <a class="" style="font-size: 1.5rem; margin-left: 4rem; margin-top: -2rem; color: rgb(214, 141, 5);">
                     <h3>{{ product.Name }}</h3>
                   </a>
                   <hr>
-                  <p style="margin-top: 1.5rem; color: #FFCFB0;">SALE PRICE </p>
+                  <p style="margin-top: 1.5rem; color: rgb(214, 141, 5);">SALE PRICE </p>
                   <p style="margin-top: -2.2rem; margin-left: 8rem; color: #01F9C6;">: {{ product.s_price }}(incl)</p>
-                  <p style="margin-top: -1rem; color: #FFCFB0;">PURCHASE PRICE </p>
+                  <p style="margin-top: -1rem; color: rgb(214, 141, 5);">PURCHASE PRICE </p>
                   <p style="margin-top: -2.3rem; margin-left: 8rem; color: #01F9C6;">: {{ product.p_price }}(excl)</p>
-                  <p style="margin-top: -3.9rem; margin-left: 40rem; color: #FFCFB0;">STOCK QUANTITY </p>
+                  <p style="margin-top: -3.9rem; margin-left: 40rem; color: rgb(214, 141, 5);">STOCK QUANTITY </p>
                   <p style="margin-top: -2.2rem; margin-left: 48rem; color: #01F9C6;">: {{ product.stock }}</p>
-                  <p style="margin-top: -1rem; margin-left: 40rem; color: #FFCFB0;">STOCK VALUE </p>
+                  <p style="margin-top: -1rem; margin-left: 40rem; color: rgb(214, 141, 5);">STOCK VALUE </p>
                   <p style="margin-top: -2.3rem; margin-left: 48rem; color: #01F9C6;">: {{ stock }}</p>
                 </div>
                 <hr>

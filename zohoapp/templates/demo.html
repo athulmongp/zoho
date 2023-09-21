@@ -52,15 +52,15 @@
 
 <section>
   <div class="row p-3">
-    <div class="list col-4 col-lg-3 col-md-3  col-sm-2 py-3">
+    <div class="list col-4 col-lg-3 col-md-3  col-sm-2 py-3 mt-4">
       <div class="header ">
-        <h5>All Items</h5>
+        <h3>All Items</h3>
       </div>
       <div class="searchbar" style="display: flex;">
         <input type="text" id="searchInput" class="form-control bg-dark" placeholder="Search Items..."
-          style="color: rgb(255, 255, 255);background: transparent;margin-right: 5px;">
-        <a class="btn btn-primary mx-1" href="" data-bs-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false" role="button">
+          style="color: rgb(255, 255, 255);background: transparent;margin-right: 5px;border: 2px solid rgb(214, 141, 5);">
+        <a class="btn btn-outline-light mx-1" href="" data-bs-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false" role="button" style="background-color: rgb(214, 141, 5);color: white;">
           <i class="fa fa-filter"></i>
         </a>
         <div class="dropdown-menu ">
@@ -68,17 +68,19 @@
           <a class="dropdown-item" href="{% url 'sort_product_hsn' product.id %}" data-sort="hsn">HSN Number</a>
           <a class="dropdown-item" href="{% url 'sort_product_name' product.id %}" data-sort="name">Name </a>
         </div>
-        <a class="btn btn-primary mr-1" href="{% url 'additem' %}"><i class="fa fa-plus"></i></a>
+        <a class="btn btn-outline-light mr-1" href="{% url 'additem' %}" style="background-color: rgb(214, 141, 5);color: white;"><i class="fa fa-plus"></i></a>
 
       </div>
       <hr>
       <table class="table table-borderless" id="mytable">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>HSN</th>
+            <th style="color: rgb(214, 141, 5);">Name</th>
+            <th style="color: rgb(214, 141, 5);">HSN</th>
           </tr>
+          
         </thead>
+        
         <tbody id="tableBody">
           {% for v in allproduct %}
           <tr>
@@ -91,87 +93,46 @@
         </tbody>
       </table>
     </div>
-    <div class="overview col-9 col-lg-9 col-md-10  col-sm-10 py-2" style="background-color: black;">
+    <div class="overview col-9 col-lg-9 col-md-10  col-sm-10" style="background-color: black;">
       <div id="overview">
         <div class="row">
           <div class="col">
-            <h3 class="px-2 pb-2" id="id1">{{product.Name}}</h3>
+            <h2 class="px-2" id="id1" style="color: rgb(214, 141, 5);"><b>{{product.Name}}</b></h2>
           </div>
-          <div class="col-md-2">
-            {%  if product.satus == 'active' %}
-            <button class="btn btn-primary text-white mt-2" >{{product.satus}}</button>
-            {% else %}
-            <button class="btn btn-primary text-white mt-3"  >{{product.satus}}</button>
-            {% endif %}
-          </div>
+          <!-- <div class="col-md-2">
+            
+          </div> -->
         </div>
-        <div class="row">
+        <div class="row" style="display: flex;">
           <div class="col-md-7" style="margin-top: 3rem;">
-            <a href="{% url 'transaction' product.id %}" style= "font-size: 18px; width: 8.6rem; height: 1.9rem; background-color: #FFCFB0;;"  class="btn btn-secondary  text-dark">
+            <a href="{% url 'transaction' product.id %}" style= "font-size: 18px; width: 8.6rem; height: 1.9rem; background-color: rgb(214, 141, 5);"  class="btn btn-secondary text-white">
               Transactions
             </a>
           </div>
           
-          <div class="col-md-3"  style="margin-top: 3rem;">
-            <a class="btn ml-1 btn-primary" href="{% url 'edititem' product.id %}" data-toggle="tooltip" title="Edit"><i
+          <div class="col-md-4"  style="margin-top: 3rem;">
+            {%  if product.status_stock == 'Active'  %}
+              <button class="btn btn-outline-light btn-outline-light text-white text-white " style="background-color: rgb(214, 141, 5);">{{product.status_stock}}</button>
+            {% else %}
+              <button class="btn  text-white btn-outline-light text-white"  style="background-color: rgb(214, 141, 5);">{{product.status_stock}}</button>
+            {% endif %}
+            <a class="btn ml-1 btn-outline-light text-white" style="background-color: rgb(214, 141, 5);" href="{% url 'edititem' product.id %}" data-toggle="tooltip" title="Edit"><i
                 class="fas fa-edit"></i></a>
-            <!-- <a class="btn btn_print ml-1" href="" id="convertToPDFButton" data-toggle="tooltip" title="Pdf"><i
-                class="mdi mdi-file-pdf"></i></a> -->
-            <!-- onclick="generatePDF()" -->
+            
 
-            <!-- <script type="text/javascript">
-              $(document).ready(function ($) {
-                console.log('print');
+            
 
-                $(document).on('click', '.btn_print', function (event) {
-                  console.log('print1');
-                  event.preventDefault();
-                  var element = document.getElementById('div-to-pdf');
-                  var opt =
-                  {
-                    margin: 1,
-                    filename: 'employee' + '.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-                  };
-                  html2pdf().set(opt).from(element).save();
-
-                });
-
-              });
-            </script> -->
-
-            <!-- <a class="btn ml-1" href="" id="dd1" data-bs-toggle="dropdown" aria-haspopup="true" data-toggle="tooltip"
-              title="Download Attachments" aria-expanded="false" role="button">
-              <i class="fas fa-download"></i>
-            </a> -->
-            <!-- <div class="dropdown-menu">
-              {% if attach %}
-              <table class="table table-borderless">
-                {% for a in attach %}
-                <tr>
-                  <td>{{forloop.counter}}.</td>
-                  <td><a href="{% url 'file_download' a.id %}">{{a.attachment.name}}</a></td>
-                  <td><a href="{% url 'deletefile' a.id %}"><i class="fas fa-trash"></i></a></td>
-                </tr>
-                {% endfor %}
-              </table>
-              {% else %}
-              <div class="text-center">No Attachment found</div>
-              {% endif %}
-            </div> -->
-
-            <a class="btn ml-1  btn-danger" href="{% url 'cleer' product.id %}" data-toggle="tooltip" title="Delete"><i
+            <a class="btn ml-1  btn-outline-light btn-outline-light text-white text-white " href="{% url 'cleer' product.id %}" data-toggle="tooltip" title="Delete" style="background-color: rgb(214, 141, 5);"><i
                 class="fa fa-trash"></i></a>
-                <button onclick="toggleModal()" class="btn btn-primary ">
+                <button onclick="toggleModal()" class="btn btn-outline-light text-white" style="background-color: rgb(214, 141, 5);">
                   <i class="fa fa-solid fa-comment"></i>
                 </button>
-            <label for="file-input" class="btn ml-1 border-0 btn-primary" data-toggle="tooltip" title="Upload Attachments">
+            <label for="file-input" class="btn ml-1  btn-outline-light text-white" data-toggle="tooltip" title="Upload Attachments" style="background-color: rgb(214, 141, 5);">
               <i class="fas fa-paperclip"></i>
             </label>
             <input id="file-input" type="file" name="file" style="display:none;" onchange="uploadFile()">
             <!-- <a class="btn ml-1  " href="" id="sts"></a> -->
+            
           </div>
         </div>
         <hr>

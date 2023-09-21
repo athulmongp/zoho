@@ -463,7 +463,7 @@ class recurring_invoice(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     cust_name=models.ForeignKey(customer,on_delete=models.CASCADE,null=True)
     items=models.ForeignKey(AddItem,on_delete=models.CASCADE,null=True)
-    cname=models.CharField(max_length=255)
+    cname=models.CharField(max_length=255,null=True,blank=True)
     cemail=models.CharField(max_length=255,null=True,blank=True)
     cadrs=models.CharField(max_length=255,null=True,blank=True)
     p_supply=models.CharField(max_length=255)
