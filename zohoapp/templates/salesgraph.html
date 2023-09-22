@@ -1,3 +1,5 @@
+<!-- .....create by athul.... -->
+
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
@@ -141,31 +143,18 @@
                           data: {
                             labels: [{% for name in items2 %}{% for n in allproduct %}"{{n.inv.due_date}}",{% endfor %}"{{name.ri.start}}",{% endfor %},
                                      ],
-                            
                             datasets: [{
                               label: '# of sold',
                               data: [{% for name in items2  %}{% for n in allproduct  %}"{{n.quantity}}",{% endfor %}"{{name.quantity}}",{% endfor %},
                                     ],
                               borderWidth: 1,
-                              lineColor:'white',
-                              borderColor:'rgb(214, 141, 5)',
+                              lineColor: 'white',
+                              borderColor: 'rgb(214, 141, 5)',
                               
                               
                             }]
                           },
-                        //   data2: {
-                        //     labels: [{% for n in items2 %}"{{n.ri.start }}",{% endfor %}],
-                            
-                        //     datasets: [{
-                        //       label: '# of sold',
-                        //       data: [{% for name in allproduct %}"{{name.quantity}}",{% endfor %}],
-                        //       borderWidth: 1,
-                        //       lineColor:'white',
-                        //       borderColor:'rgb(214, 141, 5)',
-                              
-                              
-                        //     }]
-                        //   },
+                        
                           options: {
                             scales: {
                               y: {

@@ -1,3 +1,4 @@
+<!-- .....replace by athul.... -->
 {% extends 'base.html' %}
 {% load static %}
 
@@ -99,16 +100,17 @@
 
     </div>
 </div>
+<hr>
 <div class="printable-wrapper" id="container-to-print">
     
     <div class="printable-content">
         
         
-            <!-- <h1 class="text" style="color: aliceblue;">{{ company_data.company_name }}</h1>
+        <h1 class="text text-center" style="color: aliceblue;">{{ company.company_name }}</h1>
             
-            <h5 class="text" style="color: aliceblue;">Basis: Accrual</h5> -->
-            <!-- <p class="text" style="color: white;" id="date-range-display">{{ start_date }} {{ end_date }}</p> -->
-            <!-- <p class="text" style="color: aliceblue;">From 21 Jan 2023 To 21 Jan 2024</p> -->
+        <h5 class="text  text-center" style="color: aliceblue;">Salesby Items</h5> 
+        <p class="text  text-center" style="color: white;" id="date-range-display">From_{{start}} _To _{{end}}_</p>
+        <!-- <p class="text  text-center" style="color: aliceblue;">From 21 Jan 2023 To 21 Jan 2024</p> -->
             
         
         <table class="table table-bordered table-striped mt-4" id="table" >
@@ -166,13 +168,46 @@
 </div>
 
 <script>
+   
+//   function searchTable() {
+//       let input, filter, table, tr, td, i, j, txtValue;
+//       input = document.getElementById("searchInput");
+//       filter = input.value.toLowerCase();
+//       table = document.getElementById("tableBody");
+//       tr = table.getElementsByTagName("tr");
 
-  // Function to handle the search
-  function searchTable() {
+//       // Loop through all table rows (excluding the first row, which contains the column headers)
+//       for (i = 1; i < tr.length; i++) {
+//         let rowVisible = false;
+//         td = tr[i].getElementsByTagName("td");
+
+//         // Loop through all table cells (columns) in each row
+//         for (j = 0; j < td.length; j++) {
+//           if (td[j]) {
+//             txtValue = td[j].textContent || td[j].innerText;
+//             if (txtValue.toLowerCase().indexOf(filter) > -1) {
+//               rowVisible = true;
+//               break;
+//             }
+//           }
+//         }
+  
+//         // Show/hide the row based on the search results
+//         tr[i].style.display = rowVisible ? "" : "none";
+//       }
+//     }
+  
+//     // Attach the search function to the input field's "input" event
+//     document.getElementById("searchInput").addEventListener("input", searchTable);
+
+
+
+        // Function to handle the search
+    function searchTable() {
       let input, filter, table, tr, td, i, j, txtValue;
       input = document.getElementById("searchInput");
       filter = input.value.toLowerCase();
-      table = document.getElementById("tableBody");
+      table = document.getElementById("table");
       tr = table.getElementsByTagName("tr");
 
       // Loop through all table rows (excluding the first row, which contains the column headers)
@@ -199,26 +234,7 @@
     // Attach the search function to the input field's "input" event
     document.getElementById("searchInput").addEventListener("input", searchTable);
 
-
-
-
-    //    function exportToPDF() {
-    //     console.log("Exporting to PDF...");
-
-    //     var content = document.querySelector('.printable-content');
-    //     console.log("Content:", content);
-
-    //     html2canvas(content).then(function(canvas) {
-    //         console.log("Canvas:", canvas);
-
-    //         var imgData = canvas.toDataURL('image/png');
-    //         console.log("Image Data:", imgData);
-
-    //         var pdf = new jsPDF();
-    //         pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
-    //         pdf.save('report.pdf');
-    //     });
-    // }
+   
     function exportAsPDF() {
         const container = document.getElementById('container-to-print');
 

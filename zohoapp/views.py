@@ -11771,7 +11771,7 @@ def commentproduct(request, product_id):
 
 
 
-
+# ........athul......
 def salesgraph(request,product):
     company=company_details.objects.get(user=request.user)
     user_id=request.user
@@ -11868,13 +11868,13 @@ def salesby_item_graph_filter(request,product):
 def salesby_item(request):
     items = invoice_item.objects.all()
     items2 =recur_itemtable.objects.all()
- 
-    company_data = company_details.objects.get(user=request.user)
-    return render(request, 'salesby_item.html', {'items': items,'items2': items2, 'company_data': company_data})       
+
+    company = company_details.objects.get(user=request.user)
+    return render(request, 'salesby_item.html', {'items': items,'items2': items2, 'company': company})       
 
 
 def salesby_item_filter(request):
-    company_data = company_details.objects.get(user=request.user)
+    company = company_details.objects.get(user=request.user)
     item = sales_item.objects.all()
     items2 =recur_itemtable.objects.all()
     if request.method == 'POST':
@@ -11884,8 +11884,8 @@ def salesby_item_filter(request):
         end=str(e)
         items = invoice_item.objects.filter(inv__due_date__range=[start,end])
         items2 = recur_itemtable.objects.filter(ri__start__range=[start,end])
-        return render(request, 'salesby_item.html', {'items': items,'items2': items2, 'company_data': company_data})  
+        return render(request, 'salesby_item.html', {'end':end,'start':start,'items': items,'items2': items2, 'company': company})  
 
     
 
-    return render(request, 'salesby_item.html', {'items': item, 'company_data': company_data})  
+    return render(request, 'salesby_item.html', {'items': item, 'company': company})  
